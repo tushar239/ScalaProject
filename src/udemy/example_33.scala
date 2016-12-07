@@ -1,8 +1,7 @@
 package udemy
 
 
-
-object Example1 extends App {
+object Example33 extends App {
 
   def getComparator() = {
     def compareStrings(s1: String, s2: String): Int = {

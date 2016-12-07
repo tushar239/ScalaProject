@@ -1,18 +1,20 @@
+object Example62 extends App {
 
-object NYTimesAccount {
-  private val userName = "vitthal"
-  private val password = "boo"
-  
-  def apply() = new NYTimesAccount
+  object NYTimesAccount {
+    private val userName = "vitthal"
+    private val password = "boo"
 
+    def apply() = new NYTimesAccount
+
+  }
+
+  class NYTimesAccount {
+    private val accountDetails = Map(
+      "user" -> NYTimesAccount.userName,
+      "password" -> NYTimesAccount.password
+    )
+    println(s"Hi " + accountDetails("user"))
+  }
+
+  val nytAccount = NYTimesAccount()
 }
-
-class NYTimesAccount {
-  private val accountDetails = Map(
-    "user" -> NYTimesAccount.userName,
-    "password" -> NYTimesAccount.password 
-  )
-  println(s"Hi " + accountDetails("user"))
-}
-
-val nytAccount = NYTimesAccount()

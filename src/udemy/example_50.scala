@@ -1,9 +1,11 @@
+object Example50 extends App {
+ /* val stateCodes = Map("California" -> "CA", "Vermont" -> "VT")
+  val stateCode = stateCodes("NoSuchState")
+  val stateCode = util.
+  try (stateCodes("NoSuchState"))
 
-val stateCodes = Map("California" -> "CA", "Vermont" -> "VT")
-val stateCode = stateCodes("NoSuchState")
-val stateCode = util.try(stateCodes("NoSuchState"))
-
-stateCode match {
-  case util.Success(code) => code
-  case util.Failure(error) => "something terrible happened!"
+  stateCode match {
+    case util.Success(code) => code
+    case util.Failure(error) => "something terrible happened!"
+  }*/
 }

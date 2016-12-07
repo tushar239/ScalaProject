@@ -1,17 +1,18 @@
+object Example39 extends App {
+ /* val personInfo = ("Vitthal", "Srinivasan", 36, "M")
 
-val personInfo = ("Vitthal", "Srinivasan", 36, "M")
+  personInfo
 
-personInfo
+  val genderPair = "Vitthal" -> "M"
 
-val genderPair = "Vitthal" -> "M"
+  personInfo.productIterator.foreach { i => println("Value = " + i) }
 
-personInfo.productIterator.foreach{ i => println("Value = " + i )}
+  val (firstName, lastName, age, gender) = personInfo
 
-val (firstName,lastName,age,gender) = personInfo
+  def printPersonGender(name: String, gender: String) = println(s"Name:$name M/F:$gender")
 
-def printPersonGender(name:String, gender:String) = println(s"Name:$name M/F:$gender")
+  (printPersonGender _).tupled(genderPair)
 
-(printPersonGender _).tupled(genderPair)
+  personGender.productArity*/
 
-personGender.productArity
-
+}

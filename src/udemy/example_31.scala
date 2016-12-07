@@ -1,25 +1,28 @@
+object Example31 extends App {
+  /*val PI = 3.14
 
-val PI = 3.14
+  val r = 10
 
-val r = 10
+  def getcircleArea(r: Double): Double = PI * r * r
 
-def getcircleArea(r:Double):Double = PI * r * r
+  val calcCircleArea = getCircleArea
 
-val calcCircleArea = getCircleArea
+  val calcCircleArea: (Double) => Double = getCircleArea
 
-val calcCircleArea: (Double) => Double = getCircleArea
-
-val calcCircleArea = getCircleArea _
+  val calcCircleArea = getCircleArea _
 
 
-def getPI() = {PI}
+  def getPI() = {
+    PI
+  }
 
-val calcPI: () => Double = getPI
+  val calcPI: () => Double = getPI
 
-val calcPI = getPI _
+  val calcPI = getPI _
 
-def getRectangleArea(l:Double,b:Double):Double = l*b
+  def getRectangleArea(l: Double, b: Double): Double = l * b
 
-val calcRectangleArea:(Double,Double) => Double = getRectangleArea
+  val calcRectangleArea: (Double, Double) => Double = getRectangleArea
 
-val calcRectangleArea = getRectangleArea _
+  val calcRectangleArea = getRectangleArea _*/
+}
