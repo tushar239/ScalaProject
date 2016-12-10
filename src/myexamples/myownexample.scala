@@ -9,10 +9,19 @@ object MyOwnExample {
 
     tryForLoop("Sun")
 
+    var output: Double = tryMethod(10)
+    println(output) // 314.0
+
     tryFunction()
 
-    var output:Double = tryMethod(10)
-    println(output) // 314.0
+    tryStatementExpressionFunctionProcedure
+
+    tryTuple()
+
+    val tuple: (Int, Int) = tryNestedMethods()
+    println(tuple._1, tuple._2) // (5,10)
+
+    tryAssignMethodToAVariable()
 
   }
 
@@ -68,10 +77,12 @@ object MyOwnExample {
     println(result3) // Vector(0,0,Sun, 0,0,Mon, 0,0,Tue, 0,0,Wed, 0,0,Thu, 0,0,Fri, 0,0,Sat, 0,1,Sun, 0,1,Mon, 0,1,Tue, 0,1,Wed, 0,1,Thu, 0,1,Fri, 0,1,Sat, 0,2,Sun, 0,2,Mon, 0,2,Tue, 0,2,Wed, 0,2,Thu, 0,2,Fri, 0,2,Sat, 1,0,Sun, 1,0,Mon, 1,0,Tue, 1,0,Wed, 1,0,Thu, 1,0,Fri, 1,0,Sat, 1,1,Sun, 1,1,Mon, 1,1,Tue, 1,1,Wed, 1,1,Thu, 1,1,Fri, 1,1,Sat, 1,2,Sun, 1,2,Mon, 1,2,Tue, 1,2,Wed, 1,2,Thu, 1,2,Fri, 1,2,Sat, 2,0,Sun, 2,0,Mon, 2,0,Tue, 2,0,Wed, 2,0,Thu, 2,0,Fri, 2,0,Sat, 2,1,Sun, 2,1,Mon, 2,1,Tue, 2,1,Wed, 2,1,Thu, 2,1,Fri, 2,1,Sat, 2,2,Sun, 2,2,Mon, 2,2,Tue, 2,2,Wed, 2,2,Thu, 2,2,Fri, 2,2,Sat)
   }
 
-  def tryFunction() : Unit = {
+  def tryFunction(): Unit = {
     // Below is an example of Function1 that takes one input parameter (Double) and give output (Double)
-    val someFunc = (radius:Double) => {3.14 * radius * radius} : Double
-    val andThenFunc = someFunc.andThen( (outputFromSomeFunc:Double) => {4.1 * outputFromSomeFunc * outputFromSomeFunc}:Double)
+    val someFunc = (radius: Double) => { 3.14 * radius * radius }: Double
+    val andThenFunc = someFunc.andThen((outputFromSomeFunc: Double) => {
+      4.1 * outputFromSomeFunc * outputFromSomeFunc
+    }: Double)
 
     // same as below java 8 function
     // Function<Double, Double> javaFunc = (rad) -> 3.14 * rad * rad;
@@ -81,14 +92,147 @@ object MyOwnExample {
     // or
     println(someFunc(10)) // 314.0
 
-
     println(andThenFunc.apply(10)) // 404243.6
     // or
     println(andThenFunc(10)) // 404243.6
 
   }
 
-  def tryMethod(radius : Double) : Double = {
+  def tryMethod(radius: Double): Double = {
     return 3.14 * radius * radius
+  }
+
+  /*
+  Expression and Function are almost the same with little difference.
+
+  Both returns the value and both can be assigned to the variable.
+
+  Expression does not take parameters, whereas Function takes.
+
+  Methods cannot be passed to another method. Functions can be passed to another method/function, as they are actually assigned to a variable and variable can be passed as a parameter to another method/function.
+
+  Procedures are just like methods that do not return anything (or returns Unit)
+   */
+  def tryStatementExpressionFunctionProcedure: Unit = { // You can say that this method is a Procedure as it does not return anything (or returns Unit)
+
+    // Expression is something that returns a value
+    // Here is an example of Expression Block. Expression Block is something that is wrapped by { } and returns some value.
+    // Statements are something that does not return any value.
+    val exp : String = { // This is an Expression Block because it returns a value
+      val firstName: String = "Tushar" // This whole line is a Statement, but right hand side of an assignment is an Expression because it returns a value "Tushar"
+      val lastName: String = "Chokshi"
+      s"$firstName $lastName" // Returned value from Expression Block
+    }
+    println(exp) // Tushar Chokshi
+
+    def method(firstName: String, lastName: String): String = {
+      s"$firstName $lastName"
+    }
+    println(method("Tushar", "Chokshi")) // Tushar Chokshi
+
+    // Functions are named Expressions that can take parameters. Here, expression is give a name called func
+    // methods cannot be passed to another methods, Functions can be passed because they are assigned to a variable and a variable can be passed to another function/method.
+    val func = (firstName: String, lastName: String) => {
+      s"$firstName $lastName"
+    }: String
+
+    println(func("Tushar", "Chokshi")) // Tushar Chokshi
+
+    // Functions can be passed as a parameter, methods cannot be.
+    passMethodReturnValue(method("Tushar", "Chokshi")) // method is invoked and returned value is passed to passMethod method
+    passFunction(func) // func object is passed to passFunction method. And function is invoked inside passFunction
+
+    // Procedure is a Named Statement.
+    // They are just like methods that do not return anything.
+    // You can omit the return type ad Scala will Infer the return type as Unit
+    // You can even omit the equals sign (=), but it is considered as a bad practice
+    def proc(firstName: String, lastName: String): Unit =
+      println(s"$firstName $lastName")
+    // def proc(firstName:String, lastName:String) { println(s"$firstName $lastName") }
+    proc("Tushar", "Chokshi") // Tushar Chokshi
+  }
+
+  def passMethodReturnValue(name: String): String = {
+    name
+  }
+
+  def passFunction(func: Function2[String, String, String]): String = {
+    val result: String = func("Tushar", "Chokshi")
+    result
+  }
+
+  def tryTuple(): Unit = {
+    // Expression returning a Tuple2
+
+    // val tupleReturningExp : Tuple2(Double, Double)
+    // same as
+    val tupleReturningExp : (Double, Double) = {
+      val length:Double = 5.0
+      val width:Double = 5.0
+      (length, width) // returning tuple from this expression block
+    }
+    println(tupleReturningExp)// (5.0,5.0)
+
+    // takeTupleAsParameterMethod method takes two parameters. So you can convert any
+    //val f1: (Double, Double) => Double = takeTupleAsParameterMethod _
+
+    // passed expression block is executed right away and tupled function gets Tuple2 as an input
+    // tupled is a function in Function2 trait. it takes Tuple2 as an input and calls apply method of Function2 with two parameters of Tuple2. apply method will call your method with those two parameters.
+    // Later on you will see how to assign a method to a variabl. Here By adding ‘_’ at the end of method name, we can assign a method to a variable and that variable becomes a type of Function2 trait. There are two ways to assign a method to a variabl, where variable becomes a type of Function. You will see both of these ways later on. For now, understand that ‘takeTupleAsParameterMethod _’ returns a variable of type Function’
+    val result: Double = (takeTupleAsParameterMethod _).tupled(tupleReturningExp)
+    println(result) // 25.0
+  }
+
+
+  def takeTupleAsParameterMethod(param1:Double, param2:Double): Double = {
+    param1 * param2
+  }
+
+  def tryNestedMethods() = { // this method has another methods inside it. Return type is inferred by scala. It is Tuple2 here.
+
+    def calculateSize() : Int = {
+      5
+    }
+    def calculateLength() : Int = {
+      10
+    }
+    (calculateSize(), calculateLength()) // returning tuple
+
+  }
+
+  def someMethod() : Double = {
+    5.0
+  }
+  def someMethod1(some : Double) : Double = {
+    some
+  }
+  def tryAssignMethodToAVariable() = {
+    val v = someMethod // this is fine because () is implicit after someMethod
+
+    // val v1 = someMethod1 // this won't work because you are not passing expected parameters
+
+    // There are two ways to assign a method a variable (convert a method to a Function)
+    // 1. Assign a type to a variable as shown below
+    // 2. use _ as shown below
+    // By using one of these methods, you can assign a method to a variable that is actually a Lambda (Function) at the end. You can invoke that method by invoking that Function variable.
+
+    // 1.
+    // type of a method is a combination of input parameter types and return type ((Double) => Double)
+    // To assign a method to a variable, you need to specify the type of that variable as shown below
+    // Basically, you can convert a method into a Function by assigning it to a variable like this
+    val v1 : (Double) => Double = someMethod1
+    println(v1) // myexamples.MyOwnExample$$$Lambda$25/2081303229@48eff760. v1 is a lambda of type Function1 Trait now
+    println(v1(5.0)) // 5.0
+
+    // 2.
+    val v2 = someMethod1 _
+    println(v2) // myexamples.MyOwnExample$$$Lambda$26/1076835071@573f2bb1. v2 is a lambda of type Function1 Trait now
+    println(v2(5.0)) // 5.0
+
+    tryPassingAMethodAsParameter(someMethod1)
+  }
+
+  def tryPassingAMethodAsParameter(v : (Double) => Double) = { // Method needs to be converted into Function, so that it can be passed to another method as a parameter
+    v(5.0) // 5.0
   }
 }
