@@ -2,7 +2,39 @@ package myexamples
 
 import scala.collection.immutable.IndexedSeq
 import scala.language.postfixOps;
+/*
+Expression, Statement, Method, Function, Procedure
+--------------------------------------------------
 
+Expression returns some value.
+Statement does not return any value.
+
+Methods can be Procedures (returning Unit(Void)) or Functions (returns something).
+Right hand side of a method is an expression or a statement.
+
+Method is made of Expression or Statement.
+e.g.
+  def someMethod : Double = {5.0}
+Here {5.0} is an Expression.
+So someMethod is a Function
+
+  def someMethod : Unit = {println(5.0)}
+Here, {println(5.0)} is a statement.
+So someMethod is a procedure
+
+
+Expression does not take parameters, whereas Function takes.
+
+If you assign a name to an expression, it becomes a Function.
+e.g. def someName(v : Double) : Double = {5.0 + v}
+Here {5.0 + v} is an expression. You assigned a name ‘someName’ to it using ‘def’ and so it became a Function.
+You can convert this Function that looks like a Method into really a Function object using
+  val v1 : (Double) => Double = someName
+  or
+  val v1= someName _
+Here v1 is a type of (Double) => Double which is an (method input param) => (method output param). It is a type of Function1 trait.
+
+ */
 object MyOwnExample {
 
   def main(args: Array[String]) {
@@ -21,7 +53,7 @@ object MyOwnExample {
     val tuple: (Int, Int) = tryNestedMethods()
     println(tuple._1, tuple._2) // (5,10)
 
-    tryAssignMethodToAVariable()
+    tryAssignFunctionToAVariable()
 
   }
 
@@ -206,7 +238,7 @@ object MyOwnExample {
   def someMethod1(some : Double) : Double = {
     some
   }
-  def tryAssignMethodToAVariable() = {
+  def tryAssignFunctionToAVariable() = {
     val v = someMethod // this is fine because () is implicit after someMethod
 
     // val v1 = someMethod1 // this won't work because you are not passing expected parameters
@@ -229,10 +261,10 @@ object MyOwnExample {
     println(v2) // myexamples.MyOwnExample$$$Lambda$26/1076835071@573f2bb1. v2 is a lambda of type Function1 Trait now
     println(v2(5.0)) // 5.0
 
-    tryPassingAMethodAsParameter(someMethod1)
+    tryPassingAFunctionAsParameter(someMethod1)
   }
 
-  def tryPassingAMethodAsParameter(v : (Double) => Double) = { // Method needs to be converted into Function, so that it can be passed to another method as a parameter
+  def tryPassingAFunctionAsParameter(v : (Double) => Double) = { // Method needs to be converted into Function, so that it can be passed to another method as a parameter
     v(5.0) // 5.0
   }
 }
