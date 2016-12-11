@@ -244,7 +244,7 @@ object MyOwnExample {
   /*
   Two ways to create a function
   1. Named Function using 'def'
-  2. Anonymous Function (Function Literal) using 'val' - Java Style
+  2. Anonymous Function (Function Literal or Lambda) using 'val' - Java Style
 
   Both do the same thing.
   As Anonymous Function is assigned to a variable, that variable can be kept outside the scope of a method and can be used in other methods.
