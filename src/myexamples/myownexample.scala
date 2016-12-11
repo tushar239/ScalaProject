@@ -348,6 +348,9 @@ object MyOwnExample {
     println(isVIP("Tushar", "Chokshi", vipDecider)) // true
 
     // 2. Shorter Way
+    // Here, you need to be very careful because _s (underscores) used in 3rd parameter are replaced by values passed before it exactly in the same order.
+    // e.g. first _ is replaced by "Tushar" and second _ is replaced by "Chokshi"
+    // If you do any mistake in passing input parameters, then it can result in wrong evaluation of the function (3rd parameter)
     println(isVIP("Tushar", "Chokshi", _ == "Tushar" && _ == "Chokshi")) // true
 
     // 3. Java style Way
