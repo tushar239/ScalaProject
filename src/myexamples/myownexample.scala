@@ -53,8 +53,9 @@ object MyOwnExample {
     val tuple: (Int, Int) = tryNestedFunctions()
     println(tuple._1, tuple._2) // (5,10)
 
-    tryAssignFunctionToAVariable()
+    tryTwoTypesOfFunctionCreation()
 
+    tryAssignFunctionToAVariable()
   }
 
   def tryForLoop(day: String): Unit = { // This is a method and not a function because method cannot be assigned to a variable, wherease function can be.
@@ -239,6 +240,58 @@ object MyOwnExample {
   def someFunction1(some : Double) : Double = {
     some
   }
+
+  /*
+  Two ways to create a function
+  1. Named Function using 'def'
+  2. Anonymous Function (Function Literal) using 'val' - Java Style
+
+  Both do the same thing.
+  As Anonymous Function is assigned to a variable, that variable can be kept outside the scope of a method and can be used in other methods.
+
+  def outerMethod() = {
+    //def f1 // this is not possible
+    val f3 // this is possible
+
+    def someMethod() = {
+      f3 = (d1:Double, d2:Double) => {d1+d2} : Double
+    }
+    def someOtherMethod() = {
+      f3(5.0, 5.0)
+    }
+  }
+   */
+  def tryTwoTypesOfFunctionCreation() = {
+    // Named function
+    def f1(d1:Double, d2:Double) : Double = {
+      d1 + d2
+    }
+    println(f1(5.0, 5.0)) // 10.0
+
+    // Anonymous function
+    val f2 : (Double, Double) => Double = (d1, d2) => d1 + d2;
+    println(f2(5.0, 5.0)) // 10.0
+    // or
+    val f3 = (d1:Double, d2:Double) => {d1+d2} : Double
+    println(f3(5.0, 5.0)) // 10.0
+
+    passFunc(f1) // 10.0
+    passFunc(f2) // 10.0
+    passFunc(f3) // 10.0
+
+    println(returnFunc().apply(5.0, 5.0)) // 10.0
+  }
+  def passFunc(f : (Double, Double) => Double): Unit = {
+    println(f(5.0, 5.0))
+  }
+  def returnFunc() : (Double, Double) => Double = {
+    def f1(d1:Double, d2:Double) : Double = {
+      d1 + d2
+    }
+    f1
+  }
+
+
   def tryAssignFunctionToAVariable() = {
     val v = someFunction // this is fine because () is implicit after someMethod
 
