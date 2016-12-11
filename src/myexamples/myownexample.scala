@@ -34,6 +34,12 @@ You can convert this Function that looks like a Method into really a Function ob
   val v1= someName _
 Here v1 is a type of (Double) => Double which is an (method input param) => (method output param). It is a type of Function1 trait.
 
+
+Usage of wildcard _ (underscore)
+1. Pattern Matching (for default case of 'match' expression)
+2. Assigning a function to a variable
+3. Passing function to higher order function in Shorter Way
+
  */
 object MyOwnExample {
 
@@ -174,7 +180,16 @@ object MyOwnExample {
 
     // Functions can be passed as a parameter, methods cannot be.
     passMethodReturnValue(method("Tushar", "Chokshi")) // method is invoked and returned value is passed to passMethod method
-    passFunction(func) // func object is passed to passFunction method. And function is invoked inside passFunction
+    passFunctionAsParameter(func) // func object is passed to passFunction method. And function is invoked inside passFunction
+
+    def passMethodReturnValue(name: String): String = {
+      name
+    }
+
+    def passFunctionAsParameter(func: Function2[String, String, String]): String = {
+      val result: String = func("Tushar", "Chokshi")
+      result
+    }
 
     // Procedure is a Named Statement.
     // They are just like methods that do not return anything.
@@ -184,15 +199,8 @@ object MyOwnExample {
       println(s"$firstName $lastName")
     // def proc(firstName:String, lastName:String) { println(s"$firstName $lastName") }
     proc("Tushar", "Chokshi") // Tushar Chokshi
-  }
 
-  def passMethodReturnValue(name: String): String = {
-    name
-  }
 
-  def passFunction(func: Function2[String, String, String]): String = {
-    val result: String = func("Tushar", "Chokshi")
-    result
   }
 
   def tryTuple(): Unit = {
@@ -215,11 +223,12 @@ object MyOwnExample {
     // Later on you will see how to assign a method to a variabl. Here By adding ‘_’ at the end of method name, we can assign a method to a variable and that variable becomes a type of Function2 trait. There are two ways to assign a method to a variabl, where variable becomes a type of Function. You will see both of these ways later on. For now, understand that ‘takeTupleAsParameterMethod _’ returns a variable of type Function’
     val result: Double = (takeTupleAsParameterMethod _).tupled(tupleReturningExp)
     println(result) // 25.0
-  }
 
 
-  def takeTupleAsParameterMethod(param1:Double, param2:Double): Double = {
-    param1 * param2
+    def takeTupleAsParameterMethod(param1:Double, param2:Double): Double = {
+      param1 * param2
+    }
+
   }
 
   def tryNestedFunctions() = { // this function has another functions inside it. Return type is inferred by scala. It is Tuple2 here.
@@ -234,12 +243,6 @@ object MyOwnExample {
 
   }
 
-  def someFunction() : Double = {
-    5.0
-  }
-  def someFunction1(some : Double) : Double = {
-    some
-  }
 
   /*
   Two ways to create a function
@@ -280,27 +283,37 @@ object MyOwnExample {
     passFunc(f3) // 10.0
 
     println(returnFunc().apply(5.0, 5.0)) // 10.0
-  }
-  def passFunc(f : (Double, Double) => Double): Unit = {
-    println(f(5.0, 5.0))
-  }
-  def returnFunc() : (Double, Double) => Double = {
-    def f1(d1:Double, d2:Double) : Double = {
-      d1 + d2
+
+
+    def passFunc(f : (Double, Double) => Double): Unit = {
+      println(f(5.0, 5.0))
     }
-    f1
+    def returnFunc() : (Double, Double) => Double = {
+      def f1(d1:Double, d2:Double) : Double = {
+        d1 + d2
+      }
+      f1
+    }
+
   }
 
 
   def tryAssignFunctionToAVariable() = {
+    def someFunction() : Double = {
+      5.0
+    }
+    def someFunction1(some : Double) : Double = {
+      some
+    }
+
     val v = someFunction // this is fine because () is implicit after someMethod
 
     // val v1 = someMethod1 // this won't work because you are not passing expected parameters
 
-    // There are two ways to assign a method a variable (convert a method to a Function)
+    // There are two ways to assign a Named Function (function with 'def') to a variable
     // 1. Assign a type to a variable as shown below
     // 2. use _ as shown below
-    // By using one of these methods, you can assign a method to a variable that is actually a Lambda (Function) at the end. You can invoke that method by invoking that Function variable.
+    // By using one of these approaches, you can assign a method to a variable that is actually a Lambda (Function) at the end. You can invoke that function by invoking that variable.
 
     // 1.
     // type of a method is a combination of input parameter types and return type ((Double) => Double)
@@ -315,10 +328,47 @@ object MyOwnExample {
     println(v2) // myexamples.MyOwnExample$$$Lambda$26/1076835071@573f2bb1. v2 is a lambda of type Function1 Trait now
     println(v2(5.0)) // 5.0
 
-    tryPassingAFunctionAsParameter(someFunction1)
+
   }
 
-  def tryPassingAFunctionAsParameter(v : (Double) => Double) = { // Method needs to be converted into Function, so that it can be passed to another method as a parameter
-    v(5.0) // 5.0
+
+  def tryPassingAFunctionAsParameterToAnotherFunction() = {
+    // There are 3 ways to pass a function as a parameter to another function
+    // Udemy video shows only first 2 ways. 3rd way is more like Java 8 style.
+
+    // 1. Longer Way
+    def someFunction1(some : Double) : Double = {
+      some
+    }
+    passFunctionAsParameter(5.0, someFunction1)
+
+    def vipDecider(firstName:String, lastName:String) : Boolean = {
+      firstName == "Tushar" && lastName == "Chokshi"
+    }
+    println(isVIP("Tushar", "Chokshi", vipDecider)) // true
+
+    // 2. Shorter Way
+    println(isVIP("Tushar", "Chokshi", _ == "Tushar" && _ == "Chokshi")) // true
+
+    // 3. Java style Way
+    println(isVIP("Tushar", "Chokshi", (fN, lN) => fN == "Tushar" && lN == "Chokshi")) // true
+    println(isVIP2("Tushar", "Chokshi", (fN, lN) => fN == "Tushar" && lN == "Chokshi")) // true
+
+    def passFunctionAsParameter(input:Double,
+                                func : (Double) => Double) = { // Method needs to be converted into Function, so that it can be passed to another method as a parameter
+      func.apply(input)
+    }
+
+    def isVIP(firstName:String, lastName:String,
+              isHighStatus:(String, String) => Boolean) : Boolean = {
+      isHighStatus(firstName, lastName)
+    }
+    def isVIP2(firstName:String, lastName:String,
+               // Java Style
+               isHighStatus : Function2[String, String, Boolean]) : Boolean = {
+      isHighStatus(firstName, lastName)
+    }
   }
+
+
 }
