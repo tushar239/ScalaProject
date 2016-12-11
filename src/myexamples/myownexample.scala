@@ -50,7 +50,7 @@ object MyOwnExample {
 
     tryTuple()
 
-    val tuple: (Int, Int) = tryNestedMethods()
+    val tuple: (Int, Int) = tryNestedFunctions()
     println(tuple._1, tuple._2) // (5,10)
 
     tryAssignFunctionToAVariable()
@@ -109,6 +109,11 @@ object MyOwnExample {
     println(result3) // Vector(0,0,Sun, 0,0,Mon, 0,0,Tue, 0,0,Wed, 0,0,Thu, 0,0,Fri, 0,0,Sat, 0,1,Sun, 0,1,Mon, 0,1,Tue, 0,1,Wed, 0,1,Thu, 0,1,Fri, 0,1,Sat, 0,2,Sun, 0,2,Mon, 0,2,Tue, 0,2,Wed, 0,2,Thu, 0,2,Fri, 0,2,Sat, 1,0,Sun, 1,0,Mon, 1,0,Tue, 1,0,Wed, 1,0,Thu, 1,0,Fri, 1,0,Sat, 1,1,Sun, 1,1,Mon, 1,1,Tue, 1,1,Wed, 1,1,Thu, 1,1,Fri, 1,1,Sat, 1,2,Sun, 1,2,Mon, 1,2,Tue, 1,2,Wed, 1,2,Thu, 1,2,Fri, 1,2,Sat, 2,0,Sun, 2,0,Mon, 2,0,Tue, 2,0,Wed, 2,0,Thu, 2,0,Fri, 2,0,Sat, 2,1,Sun, 2,1,Mon, 2,1,Tue, 2,1,Wed, 2,1,Thu, 2,1,Fri, 2,1,Sat, 2,2,Sun, 2,2,Mon, 2,2,Tue, 2,2,Wed, 2,2,Thu, 2,2,Fri, 2,2,Sat)
   }
 
+
+  def tryMethod(radius: Double): Double = {
+    return 3.14 * radius * radius
+  }
+
   def tryFunction(): Unit = {
     // Below is an example of Function1 that takes one input parameter (Double) and give output (Double)
     val someFunc = (radius: Double) => { 3.14 * radius * radius }: Double
@@ -128,10 +133,6 @@ object MyOwnExample {
     // or
     println(andThenFunc(10)) // 404243.6
 
-  }
-
-  def tryMethod(radius: Double): Double = {
-    return 3.14 * radius * radius
   }
 
   /*
@@ -220,7 +221,7 @@ object MyOwnExample {
     param1 * param2
   }
 
-  def tryNestedMethods() = { // this method has another methods inside it. Return type is inferred by scala. It is Tuple2 here.
+  def tryNestedFunctions() = { // this function has another functions inside it. Return type is inferred by scala. It is Tuple2 here.
 
     def calculateSize() : Int = {
       5
@@ -232,14 +233,14 @@ object MyOwnExample {
 
   }
 
-  def someMethod() : Double = {
+  def someFunction() : Double = {
     5.0
   }
-  def someMethod1(some : Double) : Double = {
+  def someFunction1(some : Double) : Double = {
     some
   }
   def tryAssignFunctionToAVariable() = {
-    val v = someMethod // this is fine because () is implicit after someMethod
+    val v = someFunction // this is fine because () is implicit after someMethod
 
     // val v1 = someMethod1 // this won't work because you are not passing expected parameters
 
@@ -252,16 +253,16 @@ object MyOwnExample {
     // type of a method is a combination of input parameter types and return type ((Double) => Double)
     // To assign a method to a variable, you need to specify the type of that variable as shown below
     // Basically, you can convert a method into a Function by assigning it to a variable like this
-    val v1 : (Double) => Double = someMethod1
+    val v1 : (Double) => Double = someFunction1
     println(v1) // myexamples.MyOwnExample$$$Lambda$25/2081303229@48eff760. v1 is a lambda of type Function1 Trait now
     println(v1(5.0)) // 5.0
 
     // 2.
-    val v2 = someMethod1 _
+    val v2 = someFunction1 _
     println(v2) // myexamples.MyOwnExample$$$Lambda$26/1076835071@573f2bb1. v2 is a lambda of type Function1 Trait now
     println(v2(5.0)) // 5.0
 
-    tryPassingAFunctionAsParameter(someMethod1)
+    tryPassingAFunctionAsParameter(someFunction1)
   }
 
   def tryPassingAFunctionAsParameter(v : (Double) => Double) = { // Method needs to be converted into Function, so that it can be passed to another method as a parameter
