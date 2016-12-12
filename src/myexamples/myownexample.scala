@@ -601,11 +601,11 @@ object MyOwnExample {
   }
 
   def tryByNameParameter() = {
-    // see 'Scala self made document.docx'
+    // see 'Scala self made document from Udemy.docs'
   }
 
   def tryClosure(): Unit = {
-    // see 'Scala self made document.docx'
+    // see 'Scala self made document from Udemy.docx'
   }
 
 }
