@@ -69,6 +69,10 @@ object MyOwnExample {
     tryPartiallyAppliedFunction_eg2()
 
     tryCurriedFunction()
+
+    tryByNameParameter()
+
+    tryClosure()
   }
 
   def tryForLoop(day: String): Unit = {
@@ -596,5 +600,12 @@ object MyOwnExample {
 
   }
 
+  def tryByNameParameter() = {
+    // see 'Scala self made document.docx'
+  }
+
+  def tryClosure(): Unit = {
+    // see 'Scala self made document.docx'
+  }
 
 }
