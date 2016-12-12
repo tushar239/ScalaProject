@@ -456,6 +456,15 @@ object MyOwnExample {
   /*
   What is currying?
   -----------------
+  f(3, 4, 5) = 3 * 4 + 5 = 17
+  we may apply the arguments 3, 4, 5 at the same time and get:
+
+  But we may also apply only 3 and get:
+  f(3, y, z) = g(y, z) = 3 * y + z
+
+  We have now a new function g, taking only two arguments. We can curry again this function, applying 4 to y:
+  g(4, z) = h(z) = 3 * 4 + z
+
   Currying allows to turn a function that expects two arguments into a function that expects only one, and that function returns a function that expects the second argument.
   Creating basically a chain of functions.
 
