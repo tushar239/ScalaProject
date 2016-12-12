@@ -2,6 +2,7 @@ package myexamples
 
 import scala.collection.immutable.IndexedSeq
 import scala.language.postfixOps;
+
 /*
 Expression, Statement, Method, Function, Procedure
 --------------------------------------------------
@@ -43,6 +44,7 @@ Usage of wildcard _ (underscore)
  */
 object MyOwnExample {
 
+
   def main(args: Array[String]) {
 
     tryForLoop("Sun")
@@ -62,9 +64,12 @@ object MyOwnExample {
     tryTwoTypesOfFunctionCreation()
 
     tryAssignFunctionToAVariable()
+
+    tryPartiallyAppliedFunction()
   }
 
-  def tryForLoop(day: String): Unit = { // This is a method and not a function because method cannot be assigned to a variable, wherease function can be.
+  def tryForLoop(day: String): Unit = {
+    // This is a method and not a function because method cannot be assigned to a variable, wherease function can be.
     val days: List[String] = List(
       "Sun",
       "Mon",
@@ -123,7 +128,9 @@ object MyOwnExample {
 
   def tryFunction(): Unit = {
     // Below is an example of Function1 that takes one input parameter (Double) and give output (Double)
-    val someFunc = (radius: Double) => { 3.14 * radius * radius }: Double
+    val someFunc = (radius: Double) => {
+      3.14 * radius * radius
+    }: Double
     val andThenFunc = someFunc.andThen((outputFromSomeFunc: Double) => {
       4.1 * outputFromSomeFunc * outputFromSomeFunc
     }: Double)
@@ -153,12 +160,14 @@ object MyOwnExample {
 
   Procedures are just like methods that do not return anything (or returns Unit)
    */
-  def tryStatementExpressionFunctionProcedure: Unit = { // You can say that this method is a Procedure as it does not return anything (or returns Unit)
+  def tryStatementExpressionFunctionProcedure: Unit = {
+    // You can say that this method is a Procedure as it does not return anything (or returns Unit)
 
     // Expression is something that returns a value
     // Here is an example of Expression Block. Expression Block is something that is wrapped by { } and returns some value.
     // Statements are something that does not return any value.
-    val exp : String = { // This is an Expression Block because it returns a value
+    val exp: String = {
+      // This is an Expression Block because it returns a value
       val firstName: String = "Tushar" // This whole line is a Statement, but right hand side of an assignment is an Expression because it returns a value "Tushar"
       val lastName: String = "Chokshi"
       s"$firstName $lastName" // Returned value from Expression Block
@@ -196,7 +205,7 @@ object MyOwnExample {
     // You can omit the return type ad Scala will Infer the return type as Unit
     // You can even omit the equals sign (=), but it is considered as a bad practice
     def proc(firstName: String, lastName: String): Unit =
-      println(s"$firstName $lastName")
+    println(s"$firstName $lastName")
     // def proc(firstName:String, lastName:String) { println(s"$firstName $lastName") }
     proc("Tushar", "Chokshi") // Tushar Chokshi
 
@@ -208,12 +217,12 @@ object MyOwnExample {
 
     // val tupleReturningExp : Tuple2(Double, Double)
     // same as
-    val tupleReturningExp : (Double, Double) = {
-      val length:Double = 5.0
-      val width:Double = 5.0
+    val tupleReturningExp: (Double, Double) = {
+      val length: Double = 5.0
+      val width: Double = 5.0
       (length, width) // returning tuple from this expression block
     }
-    println(tupleReturningExp)// (5.0,5.0)
+    println(tupleReturningExp) // (5.0,5.0)
 
     // takeTupleAsParameterMethod method takes two parameters. So you can convert any
     //val f1: (Double, Double) => Double = takeTupleAsParameterMethod _
@@ -224,19 +233,20 @@ object MyOwnExample {
     val result: Double = (takeTupleAsParameterMethod _).tupled(tupleReturningExp)
     println(result) // 25.0
 
-
-    def takeTupleAsParameterMethod(param1:Double, param2:Double): Double = {
-      param1 * param2
-    }
-
   }
 
-  def tryNestedFunctions() = { // this function has another functions inside it. Return type is inferred by scala. It is Tuple2 here.
+  def takeTupleAsParameterMethod(param1: Double, param2: Double): Double = {
+    param1 * param2
+  }
 
-    def calculateSize() : Int = {
+
+  def tryNestedFunctions() = {
+    // this function has another functions inside it. Return type is inferred by scala. It is Tuple2 here.
+
+    def calculateSize(): Int = {
       5
     }
-    def calculateLength() : Int = {
+    def calculateLength(): Int = {
       10
     }
     (calculateSize(), calculateLength()) // returning tuple
@@ -266,16 +276,18 @@ object MyOwnExample {
    */
   def tryTwoTypesOfFunctionCreation() = {
     // Named function
-    def f1(d1:Double, d2:Double) : Double = {
+    def f1(d1: Double, d2: Double): Double = {
       d1 + d2
     }
     println(f1(5.0, 5.0)) // 10.0
 
     // Anonymous function
-    val f2 : (Double, Double) => Double = (d1, d2) => d1 + d2;
+    val f2: (Double, Double) => Double = (d1, d2) => d1 + d2;
     println(f2(5.0, 5.0)) // 10.0
     // or
-    val f3 = (d1:Double, d2:Double) => {d1+d2} : Double
+    val f3 = (d1: Double, d2: Double) => {
+      d1 + d2
+    }: Double
     println(f3(5.0, 5.0)) // 10.0
 
     passFunc(f1) // 10.0
@@ -285,11 +297,11 @@ object MyOwnExample {
     println(returnFunc().apply(5.0, 5.0)) // 10.0
 
 
-    def passFunc(f : (Double, Double) => Double): Unit = {
+    def passFunc(f: (Double, Double) => Double): Unit = {
       println(f(5.0, 5.0))
     }
-    def returnFunc() : (Double, Double) => Double = {
-      def f1(d1:Double, d2:Double) : Double = {
+    def returnFunc(): (Double, Double) => Double = {
+      def f1(d1: Double, d2: Double): Double = {
         d1 + d2
       }
       f1
@@ -299,10 +311,10 @@ object MyOwnExample {
 
 
   def tryAssignFunctionToAVariable() = {
-    def someFunction() : Double = {
+    def someFunction(): Double = {
       5.0
     }
-    def someFunction1(some : Double) : Double = {
+    def someFunction1(some: Double): Double = {
       some
     }
 
@@ -319,7 +331,7 @@ object MyOwnExample {
     // type of a method is a combination of input parameter types and return type ((Double) => Double)
     // To assign a method to a variable, you need to specify the type of that variable as shown below
     // Basically, you can convert a method into a Function by assigning it to a variable like this
-    val v1 : (Double) => Double = someFunction1
+    val v1: (Double) => Double = someFunction1
     println(v1) // myexamples.MyOwnExample$$$Lambda$25/2081303229@48eff760. v1 is a lambda of type Function1 Trait now
     println(v1(5.0)) // 5.0
 
@@ -327,8 +339,6 @@ object MyOwnExample {
     val v2 = someFunction1 _
     println(v2) // myexamples.MyOwnExample$$$Lambda$26/1076835071@573f2bb1. v2 is a lambda of type Function1 Trait now
     println(v2(5.0)) // 5.0
-
-
   }
 
 
@@ -337,12 +347,12 @@ object MyOwnExample {
     // Udemy video shows only first 2 ways. 3rd way is more like Java 8 style.
 
     // 1. Longer Way
-    def someFunction1(some : Double) : Double = {
+    def someFunction1(some: Double): Double = {
       some
     }
     passFunctionAsParameter(5.0, someFunction1)
 
-    def vipDecider(firstName:String, lastName:String) : Boolean = {
+    def vipDecider(firstName: String, lastName: String): Boolean = {
       firstName == "Tushar" && lastName == "Chokshi"
     }
     println(isVIP("Tushar", "Chokshi", vipDecider)) // true
@@ -357,21 +367,49 @@ object MyOwnExample {
     println(isVIP("Tushar", "Chokshi", (fN, lN) => fN == "Tushar" && lN == "Chokshi")) // true
     println(isVIP2("Tushar", "Chokshi", (fN, lN) => fN == "Tushar" && lN == "Chokshi")) // true
 
-    def passFunctionAsParameter(input:Double,
-                                func : (Double) => Double) = { // Method needs to be converted into Function, so that it can be passed to another method as a parameter
+    def passFunctionAsParameter(input: Double,
+                                func: (Double) => Double) = {
+      // Method needs to be converted into Function, so that it can be passed to another method as a parameter
       func.apply(input)
     }
 
-    def isVIP(firstName:String, lastName:String,
-              isHighStatus:(String, String) => Boolean) : Boolean = {
+    def isVIP(firstName: String, lastName: String,
+              isHighStatus: (String, String) => Boolean): Boolean = {
       isHighStatus(firstName, lastName)
     }
-    def isVIP2(firstName:String, lastName:String,
+    def isVIP2(firstName: String, lastName: String,
                // Java Style
-               isHighStatus : Function2[String, String, Boolean]) : Boolean = {
+               isHighStatus: Function2[String, String, Boolean]): Boolean = {
       isHighStatus(firstName, lastName)
     }
   }
 
+  def tryPartiallyAppliedFunction(): Unit = {
+
+    def vipDecider(firstName: String, lastName: String): Boolean = {
+      firstName == "Tushar" && lastName == "Chokshi"
+    }
+
+
+    val fN = "Tushar"
+
+    // To evaluate isHighStatus function, you need two input parameters, but you have only one
+    // so 'isVIP_Partial' is a a partial function.
+    // it has to return another function that is capable of taking another input parameter to get the final result.
+    def isVIP_Partial(firstName: String, isHighStatus: (String, String) => Boolean)
+    : (String) => Boolean = {
+      return isHighStatus(firstName, _: String) // by providing '_', you tell scala that you don't have second parameter value available at present to evaluate 'isHighStatus' fully. This will force you to return a Function that takes remaining parameter(s) as input.
+    }
+
+    val finalFunction: (String) => Boolean
+    = isVIP_Partial(fN, vipDecider)
+
+
+    val lN = "Chokshi"
+    val result: Boolean = finalFunction.apply(lN)
+
+    println(result) // true
+
+  }
 
 }
