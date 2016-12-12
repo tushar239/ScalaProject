@@ -65,7 +65,10 @@ object MyOwnExample {
 
     tryAssignFunctionToAVariable()
 
-    tryPartiallyAppliedFunction()
+    tryPartiallyAppliedFunction_eg1()
+    tryPartiallyAppliedFunction_eg2()
+
+    tryCurriedFunction()
   }
 
   def tryForLoop(day: String): Unit = {
@@ -384,7 +387,7 @@ object MyOwnExample {
     }
   }
 
-  def tryPartiallyAppliedFunction(): Unit = {
+  def tryPartiallyAppliedFunction_eg1(): Unit = {
 
     def vipDecider(firstName: String, lastName: String): Boolean = {
       firstName == "Tushar" && lastName == "Chokshi"
@@ -411,5 +414,170 @@ object MyOwnExample {
     println(result) // true
 
   }
+
+  def tryPartiallyAppliedFunction_eg2() = {
+    def compareStrings(s1: String, s2: String): Boolean = {
+
+      val result: Boolean =
+        s1 match {
+          case str1 if (str1.compareTo(s2) == 0) => true
+          case _ => false
+        }
+      result
+
+    }
+
+    // Full function
+    def compare_full(s1: String, s2: String, compareStrings: (String, String) => Boolean)
+    : Boolean = {
+      compareStrings(s1, s2)
+    }
+    // Applying Full Function fully
+    val result1: Boolean = compare_full("abc", "abc", compareStrings) // this facility is available in Java 8
+    println(result1) // true
+
+    // Applying Full Function partially
+    val compare_full1: (String) => Boolean = compare_full(_: String, "abc", compareStrings) // this facility is NOT available in Java 8
+    val result2: Boolean = compare_full1.apply("abc")
+    println(result2) // true
+
+    // Partial Function
+    def compare_partial1(s2: String, compareStrings: (String, String) => Boolean) // this facility is available in Java 8
+    : (String) => Boolean = {
+      (s1) => compareStrings(s1, s2)
+    }
+    // Applying Partial Function partially
+    val partialResult: (String) => Boolean = compare_partial1("abc", compareStrings)
+    val result3: Boolean = partialResult.apply("abc")
+    println(result3) // true
+
+  }
+
+  /*
+  What is currying?
+  The idea of writing a function with multiple Parameter Groups is called Currying.
+  f(x, y, z) = G( H(x, y), z)
+  see here parameters of function f is grouped into H(x, y) and z  - Two parameter groups
+
+  You can apply unCurried function partially or fully
+  But Curried function forces you to apply it partially. It also helps functions composition(chaining).
+  Parameter grouping is just a Syntactic Sugar.
+
+  http://www.codecommit.com/blog/scala/function-currying-in-scala
+  In computer science, currying, invented by Moses Schönfinkel and Gottlob Frege, is the technique of transforming a function that takes multiple arguments into a function that takes a single argument (the other arguments having been specified by the curry).
+
+  // Not curried
+  def add(x:Int, y:Int) = x + y
+
+  add(1, 2) // 3
+
+  // Curried
+  def add(x:Int) = (y:Int) => x + y
+
+  val partialResult : (Int)=>Int = add(1)
+  val result:Int = partialResult(2)
+  // or simple way
+  add(1)(2)
+
+  In the first sample, the add method takes two parameters and returns the result of adding the two.
+  The second sample redefines the add method so that it takes only a single Int as a parameter and returns a functional (closure) as a result.  Our driver code then calls this functional, passing the second “parameter”.  This functional computes the value and returns the final result.
+
+  Why Currying is important?
+  --------------------------
+  https://dzone.com/articles/understanding-currying-scala
+
+  Answer: Code reuse
+  With the same value of x, you can use different values of y.
+    partialResult(3)
+    partialResult(4)
+    partialResult(5)
+    etc
+
+  */
+  def tryCurriedFunction() = {
+    def compareStrings(s1: String, s2: String): Boolean = {
+
+      val result: Boolean =
+        s1 match {
+          case str1 if (str1.compareTo(s2) == 0) => true
+          case _ => false
+        }
+      result
+
+    }
+
+    // Parameter Grouping
+    // It is just a syntactic sugar. Nothing so great about it.
+    // It just gives you a freedom to specify logical input parameters in groups
+    def unCurriedCompare(s1: String, s2: String)
+                      (compareStrings: (String, String) => Boolean)
+    : Boolean = {
+      compareStrings(s1, s2)
+    }
+
+    unCurriedCompare("abc","abc")(compareStrings)
+
+    //  ......... Applying a function partially without Currying ............
+    // Java 8 doesn't have this facility
+
+    // Not passing input parameters required for compareStrings, but passing compareStrings function
+    val partialResult1: (String, String) => Boolean
+    = unCurriedCompare(_: String, _: String)(compareStrings)
+
+    val result1: Boolean = partialResult1.apply("abc", "abc")
+    println(result1) // true
+
+    // Passing only one input parameter required by compareStrings
+    val partialResult2: (String) => Boolean
+    = unCurriedCompare("abc", _: String)(compareStrings)
+
+    val result2: Boolean = partialResult2.apply("abc")
+    println(result2) // true
+
+
+    // Passing only one input parameter required by compareStrings and not passing compareStrings
+    val partialResult3: (String, (String, String) => Boolean) => Boolean
+    = unCurriedCompare("abc", _: String)(_: (String, String) => Boolean)
+
+    val result3: Boolean = partialResult3.apply("abc", compareStrings)
+    println(result3) // true
+
+    // Passing input parameters required for compareStrings, but not passing compareStrings function
+    val partialResult4: ((String, String) => Boolean) => Boolean
+    = unCurriedCompare("abc", "abc")(_: (String, String) => Boolean)
+
+    val result4: Boolean = partialResult4.apply(compareStrings)
+    println(result4) // true
+
+
+
+    //  ...... Applying curriedCompare partially.....
+    // In fact, Curried function forces you to apply it partially
+    // Java 8 has this facility
+
+    // This is a Curried Function
+    // Function is Curried, if it forces you to apply it partially
+    def curriedCompare[T1](compareStrings: (T1, T1) => Boolean)
+    : (T1, T1) => Boolean = {
+      compareStrings
+    }
+
+    //  ......... Applying a curried function partially ............
+    val partialResult5: (String, String) => Boolean
+    = curriedCompare(compareStrings)
+
+    // now partialResult5 can be reused for different input strings
+    val result5: Boolean = partialResult5.apply("abc", "abc")
+    println(result5) // true
+
+    val result6: Boolean = partialResult5.apply("abc", "def")
+    println(result6) // false
+
+
+    // Simple way of calling a curried function
+    curriedCompare(compareStrings)("abc", "abc")
+
+  }
+
 
 }
