@@ -455,13 +455,12 @@ object MyOwnExample {
 
   /*
   What is currying?
-  The idea of writing a function with multiple Parameter Groups is called Currying.
-  f(x, y, z) = G( H(x, y), z)
-  see here parameters of function f is grouped into H(x, y) and z  - Two parameter groups
+  -----------------
+  Currying allows to turn a function that expects two arguments into a function that expects only one, and that function returns a function that expects the second argument.
+  Creating basically a chain of functions.
 
-  You can apply unCurried function partially or fully
-  But Curried function forces you to apply it partially. It also helps functions composition(chaining).
-  Parameter grouping is just a Syntactic Sugar.
+  You can apply unCurried function partially or fully.
+  But Curried function forces you to apply it partially.
 
   http://www.codecommit.com/blog/scala/function-currying-in-scala
   In computer science, currying, invented by Moses Schönfinkel and Gottlob Frege, is the technique of transforming a function that takes multiple arguments into a function that takes a single argument (the other arguments having been specified by the curry).
@@ -492,6 +491,15 @@ object MyOwnExample {
     partialResult(4)
     partialResult(5)
     etc
+
+  What is Parameter Grouping?
+  It is just a syntactic sugar. Nothing so great about it.
+  It just gives you a freedom to specify logical input parameters in groups.
+
+  def add(x:Int, y:Int) = x + y
+  can be written as
+
+  def add(x:Int)(y:Int) = x + y
 
   */
   def tryCurriedFunction() = {
