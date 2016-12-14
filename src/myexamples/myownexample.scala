@@ -710,5 +710,32 @@ object MyOwnExample {
       println(flattenedListVar.head)
       flattenedListVar = flattenedListVar.tail
     }
+
+    // .distinct
+    val listWithDuplicates = List("a", "b", "a", "c")
+    println(listWithDuplicates.distinct) // List(a, b, c)
+
+    // .drop
+    println(listWithDuplicates.drop(2)) // List(a, c)
+
+    // .slice - same as subList
+    println(listWithDuplicates.slice(1, 3)) // List(b, a)
+
+    // .splitAt - splits a list into two lists
+    println(listWithDuplicates.splitAt(1)) // List(List(a), List(b, a, c))
+
+    // .take
+    println(listWithDuplicates.take(3)) // List(a, b, a)
+
+    // .sorted, .sortWith, .sortBy
+    println(listWithDuplicates sorted) // List(a, a, b, c)
+    println(listWithDuplicates sorted(Ordering.String.reverse)) // List(c, b, a, a)
+    val list4 = List("abc", "a", "ab", "ac")
+    println(list4.sortWith((x, y) => x.length() < y.length())) // List(a, ab, ac, abc)
+    println(list4.sortBy((x) => x.substring(1))) // List(a, ab, abc, ac)
+
+    // .sum
+    val list5 = List(1,2,3,4,5)
+    println(list5.sum) // 15
   }
 }
