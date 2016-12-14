@@ -56,7 +56,7 @@ object MyOwnExample {
 
     tryStatementExpressionFunctionProcedure
 
-    tryTuple()
+    tryTupledMethodOfFunction()
 
     val tuple: (Int, Int) = tryNestedFunctions()
     println(tuple._1, tuple._2) // (5,10)
@@ -73,6 +73,10 @@ object MyOwnExample {
     tryByNameParameter()
 
     tryClosure()
+
+    tryTuple()
+
+    tryCollection()
   }
 
   def tryForLoop(day: String): Unit = {
@@ -219,7 +223,7 @@ object MyOwnExample {
 
   }
 
-  def tryTuple(): Unit = {
+  def tryTupledMethodOfFunction(): Unit = {
     // Expression returning a Tuple2
 
     // val tupleReturningExp : Tuple2(Double, Double)
@@ -321,18 +325,17 @@ object MyOwnExample {
     def someFunction(): Double = {
       5.0
     }
+    val v = someFunction // this is fine because () is implicit after someMethod
+
     def someFunction1(some: Double): Double = {
       some
     }
-
-    val v = someFunction // this is fine because () is implicit after someMethod
-
     // val v1 = someMethod1 // this won't work because you are not passing expected parameters
 
     // There are two ways to assign a Named Function (function with 'def') to a variable
     // 1. Assign a type to a variable as shown below
     // 2. use _ as shown below
-    // By using one of these approaches, you can assign a method to a variable that is actually a Lambda (Function) at the end. You can invoke that function by invoking that variable.
+    // By using one of these approaches, you can assign a method to a variable that is actually a Lambda (Function object) at the end. You can invoke Function's methods using that variable now.
 
     // 1.
     // type of a method is a combination of input parameter types and return type ((Double) => Double)
@@ -531,12 +534,12 @@ object MyOwnExample {
     // It is just a syntactic sugar. Nothing so great about it.
     // It just gives you a freedom to specify logical input parameters in groups
     def unCurriedCompare(s1: String, s2: String)
-                      (compareStrings: (String, String) => Boolean)
+                        (compareStrings: (String, String) => Boolean)
     : Boolean = {
       compareStrings(s1, s2)
     }
 
-    unCurriedCompare("abc","abc")(compareStrings)
+    unCurriedCompare("abc", "abc")(compareStrings)
 
     //  ......... Applying a function partially without Currying ............
     // Java 8 doesn't have this facility
@@ -569,7 +572,6 @@ object MyOwnExample {
 
     val result4: Boolean = partialResult4.apply(compareStrings)
     println(result4) // true
-
 
 
     //  ...... Applying curriedCompare partially.....
@@ -608,4 +610,105 @@ object MyOwnExample {
     // see 'Scala self made document from Udemy.docx'
   }
 
+  // There are Tuple1 to Tuple22 final classes in Scala
+  def tryTuple() = {
+    val tupleOf2: (String, String) = ("Tushar", "Chokshi")
+    // Special way to denote Tuple of 2 elements
+    val tupleOf2_diff_way: (String, String) = "Tushar" -> "Chokshi"
+    println(tupleOf2_diff_way) // (Tushar,Chokshi)
+
+    val tupleOf4: (String, String, Int, String) = ("Tushar", "Chokshi", 35, "Married")
+    println(tupleOf4) // (Tushar,Chokshi,35,Married)
+
+    // Accessing Tuple
+    println(tupleOf4._1) // Tushar
+    println(tupleOf4._2) // Chokshi
+    println(tupleOf4._3) // 35
+    println(tupleOf4._4) // Married
+
+    // Accessing Tuple elements using variables
+    // If you don't care about some elements, simply specify the placeholder using wildcard _ (underscore)
+    val(firstName, lastName, _, maritalStatus) = tupleOf4
+    println(firstName) // Tushar
+    println(lastName)  // Chokshi
+    println(maritalStatus) // Married
+
+    // Iterating over Tuple
+    tupleOf4.productIterator.foreach(element => println(s"hi $element"))
+    // O/P:
+    // hi Tushar
+    // hi Chokshi
+    // hi 35
+    // hi Married
+
+    val numberOfElements: Int = tupleOf4.productArity
+    println(numberOfElements) // 4
+
+  }
+
+  def tryCollection() = {
+    // using cons (Constructor) operator ::
+    val list1 = "Sun" :: "Mon" :: "Tue" :: "Wed" :: "Thu" :: "Fri" :: "Sat" :: Nil
+
+    // using constructor
+    // no need to use 'new' operator because List is an object of scala.collection.immutable.List.
+    // This is how List object is initialized
+    // val List = scala.collection.immutable.List
+    // somehow it calls immutable.List's apply method that takes varargs and creates a list from it.
+    val list2 = List("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+
+    val list3 = List("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+    // concatenating two lists
+    // using ::: operator
+    val concatenated1 = list2 ::: list3
+    println(concatenated1) // List(Sun, Mon, Tue, Wed, Thu, Fri, Sat, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec)
+
+    // using ++ operator
+    val concatenated2 = list2 ++ list3
+    println(concatenated2) // List(Sun, Mon, Tue, Wed, Thu, Fri, Sat, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec)
+
+    // zipping two lists
+    val days = List("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "something_else1", "something_else2")
+    val numbers = List(1,2,3,4,5,6,7)
+    val listsZippedIntoTuple: List[(String, Int)] = days.zip(numbers)
+    println(listsZippedIntoTuple)// List((Sun,1), (Mon,2), (Tue,3), (Wed,4), (Thu,5), (Fri,6), (Sat,7))
+
+    val all: List[(String, Int)] = days.zipAll(numbers, "hi", 1)
+    println(all)  // List((Sun,1), (Mon,2), (Tue,3), (Wed,4), (Thu,5), (Fri,6), (Sat,7), (something_else1,1), (something_else2,1))
+
+    // flattening list of lists into one list
+    val listOfLists : List[List[String]] = List(List("a","b","c"), List("d","e","f"))
+    val flattenedList: List[String] = listOfLists.flatten
+    println(flattenedList) // List(a, b, c, d, e, f)
+
+    // .head and .tail
+    println(flattenedList.head) // a
+    println(flattenedList.tail) // List(b, c, d, e, f)
+
+    // .size and .reverse
+    println(flattenedList.size) // 5
+    println(flattenedList.reverse) // List(f, e, d, c, b, a)
+
+    // .contains
+    println(flattenedList.contains("c")) // true
+
+    // you can use any list method in two ways
+    // 1. dot notation
+    println(flattenedList.contains("c")) // true
+    // 2. operator notation
+    println(flattenedList contains "c") // true
+
+    // traditional for loop using value binding (every element of a list is bound to variable c one by one)
+    for(c <- flattenedList) {
+      println(c)
+    }
+
+    // while loop - It's a bit clunkier as needs to be terminated correctly
+    var flattenedListVar = flattenedList;
+    while(!flattenedListVar.isEmpty) { // is same as flattenedListVar != Nil
+      println(flattenedListVar.head)
+      flattenedListVar = flattenedListVar.tail
+    }
+  }
 }
