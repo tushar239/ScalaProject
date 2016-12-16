@@ -77,6 +77,8 @@ object MyOwnExample {
     tryTuple()
 
     tryCollection()
+
+    tryHigherOrderFunctionsOnList()
   }
 
   def tryForLoop(day: String): Unit = {
@@ -628,9 +630,9 @@ object MyOwnExample {
 
     // Accessing Tuple elements using variables
     // If you don't care about some elements, simply specify the placeholder using wildcard _ (underscore)
-    val(firstName, lastName, _, maritalStatus) = tupleOf4
+    val (firstName, lastName, _, maritalStatus) = tupleOf4
     println(firstName) // Tushar
-    println(lastName)  // Chokshi
+    println(lastName) // Chokshi
     println(maritalStatus) // Married
 
     // Iterating over Tuple
@@ -670,15 +672,15 @@ object MyOwnExample {
 
     // zipping two lists
     val days = List("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "something_else1", "something_else2")
-    val numbers = List(1,2,3,4,5,6,7)
+    val numbers = List(1, 2, 3, 4, 5, 6, 7)
     val listsZippedIntoTuple: List[(String, Int)] = days.zip(numbers)
-    println(listsZippedIntoTuple)// List((Sun,1), (Mon,2), (Tue,3), (Wed,4), (Thu,5), (Fri,6), (Sat,7))
+    println(listsZippedIntoTuple) // List((Sun,1), (Mon,2), (Tue,3), (Wed,4), (Thu,5), (Fri,6), (Sat,7))
 
     val all: List[(String, Int)] = days.zipAll(numbers, "hi", 1)
-    println(all)  // List((Sun,1), (Mon,2), (Tue,3), (Wed,4), (Thu,5), (Fri,6), (Sat,7), (something_else1,1), (something_else2,1))
+    println(all) // List((Sun,1), (Mon,2), (Tue,3), (Wed,4), (Thu,5), (Fri,6), (Sat,7), (something_else1,1), (something_else2,1))
 
     // flattening list of lists into one list
-    val listOfLists : List[List[String]] = List(List("a","b","c"), List("d","e","f"))
+    val listOfLists: List[List[String]] = List(List("a", "b", "c"), List("d", "e", "f"))
     val flattenedList: List[String] = listOfLists.flatten
     println(flattenedList) // List(a, b, c, d, e, f)
 
@@ -700,13 +702,14 @@ object MyOwnExample {
     println(flattenedList contains "c") // true
 
     // traditional for loop using value binding (every element of a list is bound to variable c one by one)
-    for(c <- flattenedList) {
+    for (c <- flattenedList) {
       println(c)
     }
 
     // while loop - It's a bit clunkier as needs to be terminated correctly
     var flattenedListVar = flattenedList;
-    while(!flattenedListVar.isEmpty) { // is same as flattenedListVar != Nil
+    while (!flattenedListVar.isEmpty) {
+      // is same as flattenedListVar != Nil
       println(flattenedListVar.head)
       flattenedListVar = flattenedListVar.tail
     }
@@ -727,15 +730,150 @@ object MyOwnExample {
     // .take
     println(listWithDuplicates.take(3)) // List(a, b, a)
 
+    // .sum
+    val list5 = List(1, 2, 3, 4, 5)
+    println(list5.sum) // 15
+  }
+
+  def tryHigherOrderFunctionsOnList(): Unit = {
+    // forEach takes a procedure as a parameter. You can think of procedure as Java's Consumer that doesn't return anything.
+    // So, forEach is a statement, not an expression
+    tryForEach
+
+    // map takes a function as a parameter. I applies that function on each element and returns back the list.
+    // so map is a function, not a procedure
+    tryMap
+
+    // filter takes a function that returns boolean. It is also called a predicate.
+    tryFilter
+
+    // just like filter, partition also takes a predicate, but it return a Tuple having two lists, one that satisfies the predicate and another that doesn't.
+    tryPartition
+
+    trySortBy
+
+    // reduce function is applied to two adjacent elements throughout the list and produces one element.
+    // scan is a type of reduce function, but it produces an element from each operation of two elements (so a list).
+    tryScanFoldReduce
+  }
+
+  def tryForEach: Unit = {
+    val weekDays = "Sun" :: "Mon" :: "Tue" :: "Wed" :: "Thu" :: "Fri" :: "Sat" :: Nil
+
+    weekDays.foreach(weekDay => println(weekDay)) // it can take Function Literal
+
+    // OR
+    weekDays.foreach(println(_)) //  It can simply do like this. _ takes elements one by one
+
+    // OR
+    val func = (weekDay: Any) => println(weekDay): Unit
+
+    weekDays.foreach(func) // it can take Function Object
+  }
+
+  def tryMap: Unit = {
+
+    val weekDays = "Sun" :: "Mon" :: "Tue" :: "Wed" :: "Thu" :: "Fri" :: "Sat" :: Nil
+    val newList: List[String] = weekDays.map(weekDay => "my " + weekDay) // it can take Function literal
+    println(newList) // List(my Sun, my Mon, my Tue, my Wed, my Thu, my Fri, my Sat)
+
+    // or
+    val newList1: List[String] = weekDays.map("my " + _) // you can use _ to access an element of a list just like forEach
+    println(newList1) // List(my Sun, my Mon, my Tue, my Wed, my Thu, my Fri, my Sat)
+
+    // or
+    val func = (weekDay: Any) => "my " + weekDay: String
+
+    val newList2: List[String] = weekDays.map(func) // it can take Function Object
+    println(newList2) // List(my Sun, my Mon, my Tue, my Wed, my Thu, my Fri, my Sat)
+
+
+    val newList3: List[Boolean] = weekDays.map(_ == "Sun")
+    println(newList3) // List(true, false, false, false, false, false, false)
+
+  }
+
+  def tryFilter = {
+    val weekDays = "Sun" :: "Mon" :: "Tue" :: "Wed" :: "Thu" :: "Fri" :: "Sat" :: Nil
+
+    val filteredList: List[String] = weekDays.filter(weekDay => weekDay != "Mon")
+    println(filteredList) // List(Sun, Tue, Wed, Thu, Fri, Sat)
+
+    val filteredList1: List[String] = weekDays.filter(_ != "Mon")
+    println(filteredList1) // List(Sun, Tue, Wed, Thu, Fri, Sat)
+
+    val predicate = (weekDay: String) => weekDay != "Mon": Boolean
+    val filteredList2: List[String] = weekDays.filter(predicate)
+    println(filteredList2) // List(Sun, Tue, Wed, Thu, Fri, Sat)
+  }
+
+  def tryPartition = {
+    val weekDays = "Sun" :: "Mon" :: "Tue" :: "Wed" :: "Thu" :: "Fri" :: "Sat" :: Nil
+
+    val partitionedTuple: (List[String], List[String]) = weekDays.partition(_ != "Mon")
+    println(partitionedTuple) // (List(Sun, Tue, Wed, Thu, Fri, Sat), List(Mon))
+  }
+
+  def trySortBy = {
+    val weekDays = "Sun" :: "Mon" :: "Tue" :: "Wed" :: "Thu" :: "Fri" :: "Sat" :: Nil
+
+    val sorted: List[String] = weekDays.sortBy(weekDay => weekDay)
+    println(sorted) // List(Fri, Mon, Sat, Sun, Thu, Tue, Wed)
+
+    val sorted1: List[String] = weekDays.sortBy(_ (0)) // sort string based on strings' 0th character
+    println(sorted1) // List(Fri, Mon, Sat, Sun, Thu, Tue, Wed)
+
+    val sorted2: List[String] = weekDays.sortBy(_ (1)) // sort string based on strings' 1st character
+    println(sorted2) // List(Sat, Wed, Thu, Mon, Fri, Sun, Tue)
+
     // .sorted, .sortWith, .sortBy
-    println(listWithDuplicates sorted) // List(a, a, b, c)
-    println(listWithDuplicates sorted(Ordering.String.reverse)) // List(c, b, a, a)
+    println(weekDays sorted) // List(Fri, Mon, Sat, Sun, Thu, Tue, Wed)
+    println(weekDays sorted (Ordering.String.reverse)) // List(Wed, Tue, Thu, Sun, Sat, Mon, Fri)
+
     val list4 = List("abc", "a", "ab", "ac")
     println(list4.sortWith((x, y) => x.length() < y.length())) // List(a, ab, ac, abc)
     println(list4.sortBy((x) => x.substring(1))) // List(a, ab, abc, ac)
 
-    // .sum
-    val list5 = List(1,2,3,4,5)
-    println(list5.sum) // 15
+  }
+
+  def tryScanFoldReduce = {
+
+    val someNumbers = List(10, 20, 30, 40, 50, 60)
+
+    tryScan
+    tryFold
+    tryReduce
+
+    def tryScan = {
+      // scanLeft is left-associative.
+      // scanRight is right-associative.
+      // scan method doesn't guarantee the direction. It is merely coincidence that it matches scanLeft. The output depends on the implementation in the traversable (here List)
+
+      // scan function allows parameter grouping. first group takes only identity value and second group takes a function that needs to be applied on two elements.
+      val scanResult1: List[Int] = someNumbers.scan(0)((a, b) => a + b)
+      println(scanResult1) // List(0, 10, 30, 60, 100, 150, 210)
+      // or
+      val scanResult2: List[Int] = someNumbers.scan(0)(_ + _)
+      println(scanResult2) // List(0, 10, 30, 60, 100, 150, 210)
+
+      val scanResult3: List[Int] = someNumbers.scanLeft(0)(_ + _)
+      println(scanResult3) // List(0, 10, 30, 60, 100, 150, 210)
+
+      val scanResult4: List[Int] = someNumbers.scanRight(0)(_ + _)
+      println(scanResult4) // List(210, 200, 180, 150, 110, 60, 0)
+
+    }
+
+    def tryFold = {
+      val foldResult1: Int = someNumbers.fold(0)((a, b) => a + b)
+      println(foldResult1) // 210
+    }
+
+    def tryReduce = {
+      val reduceResult1: Int = someNumbers.reduce((a, b) => a + b)
+      println(reduceResult1) // 210
+    }
+
+
   }
 }
