@@ -1,6 +1,7 @@
 package myexamples
 
 import scala.collection.immutable.IndexedSeq
+import scala.collection.mutable
 import scala.language.postfixOps;
 
 /*
@@ -79,6 +80,10 @@ object MyOwnExample {
     tryCollection()
 
     tryHigherOrderFunctionsOnList()
+
+    tryMapAndSet()
+
+    tryImmutableCollection()
   }
 
   def tryForLoop(day: String): Unit = {
@@ -614,8 +619,10 @@ object MyOwnExample {
 
   // There are Tuple1 to Tuple22 final classes in Scala
   def tryTuple() = {
+
     val tupleOf2: (String, String) = ("Tushar", "Chokshi")
-    // Special way to denote Tuple of 2 elements
+
+    // Special way to denote Tuple of 2 elements like key-value pair
     val tupleOf2_diff_way: (String, String) = "Tushar" -> "Chokshi"
     println(tupleOf2_diff_way) // (Tushar,Chokshi)
 
@@ -754,7 +761,7 @@ object MyOwnExample {
 
     // reduce function is applied to two adjacent elements throughout the list and produces one element.
     // scan is a type of reduce function, but it produces an element from each operation of two elements (so a list).
-    tryScanFoldReduce
+    tryScanFoldReduceEndsWithStartsWithForall_ReductionFunctions
   }
 
   def tryForEach: Unit = {
@@ -836,13 +843,14 @@ object MyOwnExample {
 
   }
 
-  def tryScanFoldReduce = {
+  def tryScanFoldReduceEndsWithStartsWithForall_ReductionFunctions = {
 
     val someNumbers = List(10, 20, 30, 40, 50, 60)
 
     tryScan
     tryFold
     tryReduce
+    tryStartsWithEndsWithForAll
 
     def tryScan = {
       // scanLeft is left-associative.
@@ -879,6 +887,103 @@ object MyOwnExample {
       println(reduceResult1) // 210
     }
 
+    def tryStartsWithEndsWithForAll = {
+      val weekDays = "Mon" :: "Tue" :: "Wed" :: "Thu" :: "Fri" :: "Sat" :: Nil
+      val weekEnds = "Sat" :: "Sun" :: Nil
+      val allDays = weekDays ++ weekEnds
+
+      println(allDays startsWith weekDays) // true. see here we have used operator 'startsWith' and not a method '.startsWith'. You can use a method also.
+      println(allDays endsWith weekEnds) // true
+      println(allDays forall (_ != "monday")) // true
+    }
+  }
+
+  // For side-effect free code, List,Set,Map are immutable collections. So, they don’t have add,set,remove,put etc methods. The only way to modify is to transform them into a new collection.
+  def tryMapAndSet() = {
+
+    // Creating a Map
+    val stateCodes: Map[String, String] =
+    Map(("California", "CA"),
+      ("New York", "NY"),
+      ("Vermont", "VT"))
+
+    // or
+    // tuple can also be defined as below
+    val stateCodes1: Map[String, String] =
+    Map(("California" -> "CA"),
+      ("New York" -> "NY"),
+      ("Vermont" -> "VT"))
+
+
+    val sb: StringBuilder = new StringBuilder()
+    stateCodes.addString(sb)
+    println(sb) // California -> CANew York -> NYVermont -> VT
+
+    println(stateCodes1) // Map(California -> CA, New York -> NY, Vermont -> VT)
+
+    // Looking up in a Map
+    println(stateCodes("California")) // CA
+
+    // println(stateCodes("Georgia")) // exception for non-existent key
+
+    // check for presence of a key
+    println(stateCodes.contains("Georgia")) // false
+
+    // All the reduction functions are same as List
+    // Only difference is that you need to remember to apply that function on both key and value
+    stateCodes.foreach(tuple => println(tuple._1 + "=" + tuple._2))
+
+    // convert Lists to Map
+    val states = List("California", "New York", "Vermont")
+    val codes = List("Ca", "NY", "VT")
+    // zip creates a list of tuples from two lists. To convert that list of Tuple to a map, use toMap
+    val mapFromLists: Map[String, String] = states.zip(codes).toMap
+    println(mapFromLists) // Map(California -> Ca, New York -> NY, Vermont -> VT)
+
+    // convert map to list
+    val keysToList: List[String] = stateCodes.keys.toList
+    // or
+    // val keysToList: List[String] = stateCodes.keySet.toList
+    println(keysToList) // List(California, New York, Vermont)
+
+    val valuesToList: List[String] = stateCodes.values.toList
+    println(valuesToList) // List(CA, NY, VT)
+
+    val valuesToArray: Array[String] = stateCodes.values.toArray
+    println(valuesToArray.length) // 3
+    println(valuesToArray.foreach(v => print(v + ","))) // CA,NY,VT,() --- () is for what ???????
+  }
+
+  def tryImmutableCollection() = {
+
+    createMutableCollection()
+    convertImmutableCollectionToMutableOne()
+
+
+    def createMutableCollection() = {
+      // creating mutable collection
+      val mutableList: mutable.Buffer[Int] = collection.mutable.Buffer(10, 20, 30) // Mutable version of a List is Buffer
+      val mutableSet: mutable.Set[Int] = collection.mutable.Set(10, 20, 30, 10)
+      val mutableMap: mutable.Map[String, String] =
+        collection.mutable.Map(("California", "CA"),
+          ("New York", "NY"),
+          ("Vermont", "VT"))
+    }
+
+    def convertImmutableCollectionToMutableOne() = {
+
+      // converting immutable collection to mutable one
+      val someNumbers = List(10, 20, 30) // immutable list
+
+      // Step 1 - using <CollectionType>.newBuilder[ElementType], create a mutable Builder
+      val mutableListBuilder: mutable.Builder[Int, List[Int]] = List.newBuilder[Int] // it is a ListBuffer
+      // Step 2 - using foreach, add all the values you want from immutable list to mutableListBuilder
+      someNumbers.foreach(number => mutableListBuilder+=(number))
+      // Step 3 - use .result on mutableListBuilder
+      val mutableList: List[Int] = mutableListBuilder.result()
+      println(mutableList) // List(10, 20, 30)
+
+    }
 
   }
 }
