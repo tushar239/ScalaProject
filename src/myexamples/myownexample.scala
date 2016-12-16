@@ -84,6 +84,8 @@ object MyOwnExample {
     tryMapAndSet()
 
     tryImmutableCollection()
+
+    tryArrays()
   }
 
   def tryForLoop(day: String): Unit = {
@@ -978,12 +980,22 @@ object MyOwnExample {
       // Step 1 - using <CollectionType>.newBuilder[ElementType], create a mutable Builder
       val mutableListBuilder: mutable.Builder[Int, List[Int]] = List.newBuilder[Int] // it is a ListBuffer
       // Step 2 - using foreach, add all the values you want from immutable list to mutableListBuilder
-      someNumbers.foreach(number => mutableListBuilder+=(number))
+      someNumbers.foreach(number => mutableListBuilder+=(number)) // += is an overloaded operator
       // Step 3 - use .result on mutableListBuilder
       val mutableList: List[Int] = mutableListBuilder.result()
       println(mutableList) // List(10, 20, 30)
 
     }
+
+  }
+
+  // Arrays are fixed length and you can modify its elements.
+  def tryArrays() = {
+    val fiveInts = new Array[Int](5)
+    println(fiveInts.foreach(print(_))) // 0 0 0 0 0 ()  --- () ???
+
+    fiveInts(0) = 10
+    println(fiveInts.foreach(print(_))) // 10 0 0 0 0 ()  --- () ???
 
   }
 }
