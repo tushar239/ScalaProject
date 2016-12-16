@@ -865,11 +865,16 @@ object MyOwnExample {
     }
 
     def tryFold = {
+
+      // fold is same as scan.
+      // Difference is that fold returns the result of all elements.
       val foldResult1: Int = someNumbers.fold(0)((a, b) => a + b)
       println(foldResult1) // 210
     }
 
     def tryReduce = {
+      // reduce is same as fold.
+      // Difference is that reduce doesn't take initial value (identity value).
       val reduceResult1: Int = someNumbers.reduce((a, b) => a + b)
       println(reduceResult1) // 210
     }
