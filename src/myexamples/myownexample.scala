@@ -2,7 +2,8 @@ package myexamples
 
 import scala.collection.immutable.IndexedSeq
 import scala.collection.mutable
-import scala.language.postfixOps;
+import scala.language.postfixOps
+import scala.util.{Failure, Success, Try};
 
 /*
 Expression, Statement, Method, Function, Procedure
@@ -86,6 +87,8 @@ object MyOwnExample {
     tryImmutableCollection()
 
     tryArrays()
+
+    tryOptionAndUtilTry()
   }
 
   def tryForLoop(day: String): Unit = {
@@ -928,6 +931,10 @@ object MyOwnExample {
 
     // println(stateCodes("Georgia")) // exception for non-existent key
 
+    // stateCodes.get("Georgia") will return None
+    // stateCodes("Georigia") will throw NoSuchElementException
+
+
     // check for presence of a key
     println(stateCodes.contains("Georgia")) // false
 
@@ -980,7 +987,7 @@ object MyOwnExample {
       // Step 1 - using <CollectionType>.newBuilder[ElementType], create a mutable Builder
       val mutableListBuilder: mutable.Builder[Int, List[Int]] = List.newBuilder[Int] // it is a ListBuffer
       // Step 2 - using foreach, add all the values you want from immutable list to mutableListBuilder
-      someNumbers.foreach(number => mutableListBuilder+=(number)) // += is an overloaded operator
+      someNumbers.foreach(number => mutableListBuilder += (number)) // += is an overloaded operator
       // Step 3 - use .result on mutableListBuilder
       val mutableList: List[Int] = mutableListBuilder.result()
       println(mutableList) // List(10, 20, 30)
@@ -996,6 +1003,74 @@ object MyOwnExample {
 
     fiveInts(0) = 10
     println(fiveInts.foreach(print(_))) // 10 0 0 0 0 ()  --- () ???
+
+  }
+
+  // Option has two subclasses - None and Some
+  def tryOptionAndUtilTry() = {
+
+    def division(a: Int, b: Int): (Option[Double]) = {
+
+      // using if expression
+      var result: Option[Double] =
+      if (b == 0) None
+      else Some(a / b)
+
+      // or  using match expression
+      result =
+        b match {
+          case 0 => None
+          case _ => Some(a / b)
+        }
+
+      result
+    }
+
+    // using option.getOrElse
+    var res = division(1, 1)
+    println(res.getOrElse("can not be divided by 0")) // 1.0
+    res = division(1, 0)
+    println(res.getOrElse("can not be divided by 0")) // can not be divided by 0
+
+    // Using match expression
+    res = division(1, 1)
+
+    val finalResult =
+      res match {
+      case None => "can not be divided by 0"
+      case Some(anything) => anything
+    }
+    println(finalResult) // 1.0
+
+
+
+    // util.Try
+    // Option saves us from NullPointerException
+    // util.Try can save us from any type of exception
+    // It has two subclasses : Success and Failure
+    // Success is wrapper of result value
+    // Failure is a wrapper of an exception
+    val stateCodes: Map[String, String] =
+      Map(("California", "CA"),
+        ("New York", "NY"),
+        ("Vermont", "VT"))
+
+    // stateCodes.get("Georgia") will return None
+    // stateCodes("Georigia") will throw NoSuchElementException
+
+    var triedMaybeString: Try[String] = Try(stateCodes("Georgia"))
+    println(triedMaybeString) // Failure(java.util.NoSuchElementException: key not found: Georgia)
+    // if you do triedMaybeString.get, then it will throw NoSuchElementException
+
+    triedMaybeString = Try(stateCodes("California"))
+    println(triedMaybeString) // Success(CA)
+
+    // or using match expression
+    val result: String = triedMaybeString match {
+      case Failure(anything) => "something went wrong"
+      case Success(anything) => anything
+    }
+    println(result) // CA
 
   }
 }
