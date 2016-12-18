@@ -177,6 +177,8 @@ object MyOwnExample {
     tryArrays()
 
     tryOptionAndUtilTry()
+
+    tryClass()
   }
 
   def tryForLoop(day: String): Unit = {
@@ -1160,4 +1162,39 @@ object MyOwnExample {
     println(result) // CA
 
   }
+
+  // Unlike to Java, here you can define a default constructor like this
+  // Unlike to Java, by default class members are given 'public' access. There is no 'default' access like Java.
+  class Rectangle1(l: Int, w: Int) {
+    // member variables
+    val length: Int = l
+    val width: Int = w
+
+    def getArea: Int = {
+      // using member variables in a member method
+      length * width
+      // or
+      //l * w
+    }
+
+    // you can override parent class' method using 'override' keyword. 'override' keyword is not optional like Java's @Override
+    override def toString = s"Rectangle1($length, $width)"
+  }
+  // Another way to create member vairbales
+  // class Rectangle1(val length: Int, val width: Int)
+
+  def tryClass() = {
+
+    val rect1: Rectangle1 = new Rectangle1(5, 5)
+    val rect2: Rectangle1 = new Rectangle1(6, 6)
+    val rect3: Rectangle1 = new Rectangle1(7, 7)
+
+    val rects:List[Rectangle1] = List(rect1, rect2, rect3)
+    //val result: List[Int] = rects.map(rect => rect.getArea)
+    // or using method reference (_ underscore)
+    val result: List[Int] = rects.map(_.getArea)
+    println(result) // List(25, 36, 49)
+
+  }
+
 }
