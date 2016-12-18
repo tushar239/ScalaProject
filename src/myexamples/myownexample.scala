@@ -1164,19 +1164,24 @@ object MyOwnExample {
 
   }
 
+  class Shape(sN:String) {
+    val shapeName: String = sN;
+  }
+
   // Unlike to Java, here you can define a default constructor like this
-  // Unlike to Java, by default class members are given 'public' access. There is no 'default' access like Java.
-  class Rectangle(l: Int, w: Int = 1) { // you can provide default value to class parameter to avoid auxiliary constructors (constructor overloading)
+  // Rectangle class extends Shape class. There is no 'super' keyword like Java. It passes shapeName to Shape class as 'extends Shape(shapeName)
+  class Rectangle(l: Int, w: Int, shapeName: String = "Rectangle") extends Shape(shapeName) { // you can provide default value to class parameter to avoid auxiliary constructors (constructor overloading)
     // member variables
+    // Unlike to Java, by default class members are given 'public' access. There is no 'default' access like Java.
     val length: Int = l
     val width: Int = w
 
     // Auxiliary constructor
-/*
+    /*
     def this(l:Int, w: Int, d:Int) ={
       this(l, w)
     }
-*/
+    */
 
     def getArea: Int = {
       // using member variables in a member method
@@ -1186,7 +1191,7 @@ object MyOwnExample {
     }
 
     // you can override parent class' method using 'override' keyword. 'override' keyword is not optional like Java's @Override
-    override def toString = s"Rectangle1($length, $width)"
+    override def toString = s"Rectangle($length, $width)"
   }
   // Another way to create member vairbales
   // class Rectangle1(val length: Int, val width: Int)
