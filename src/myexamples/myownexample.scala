@@ -3,6 +3,7 @@ package myexamples
 import scala.collection.immutable.IndexedSeq
 import scala.collection.mutable
 import scala.language.postfixOps
+import scala.runtime.Nothing$
 import scala.util.{Failure, Success, Try};
 
 /*
@@ -1165,10 +1166,17 @@ object MyOwnExample {
 
   // Unlike to Java, here you can define a default constructor like this
   // Unlike to Java, by default class members are given 'public' access. There is no 'default' access like Java.
-  class Rectangle1(l: Int, w: Int) {
+  class Rectangle(l: Int, w: Int = 1) { // you can provide default value to class parameter to avoid auxiliary constructors (constructor overloading)
     // member variables
     val length: Int = l
     val width: Int = w
+
+    // Auxiliary constructor
+/*
+    def this(l:Int, w: Int, d:Int) ={
+      this(l, w)
+    }
+*/
 
     def getArea: Int = {
       // using member variables in a member method
@@ -1185,11 +1193,11 @@ object MyOwnExample {
 
   def tryClass() = {
 
-    val rect1: Rectangle1 = new Rectangle1(5, 5)
-    val rect2: Rectangle1 = new Rectangle1(6, 6)
-    val rect3: Rectangle1 = new Rectangle1(7, 7)
+    val rect1: Rectangle = new Rectangle(5, 5)
+    val rect2: Rectangle = new Rectangle(6, 6)
+    val rect3: Rectangle = new Rectangle(7, 7)
 
-    val rects:List[Rectangle1] = List(rect1, rect2, rect3)
+    val rects:List[Rectangle] = List(rect1, rect2, rect3)
     //val result: List[Int] = rects.map(rect => rect.getArea)
     // or using method reference (_ underscore)
     val result: List[Int] = rects.map(_.getArea)
