@@ -39,9 +39,72 @@ Here v1 is a type of (Double) => Double which is an (method input param) => (met
 
 
 Usage of wildcard _ (underscore)
+
 1. Pattern Matching (for default case of 'match' expression)
+    val days: List[String] = List("Sun","Mon","Tue","Wed","Thu","Fri","Sat")
+
+    val result: List[String] = for (d <- days) yield {
+
+      // Scala encourages to use 'match', same as 'switch-case' in java, instead of 'if-else'
+      // Unlike to java, 'match' can return a value, you can write if condition with 'case' also.
+      d match {
+        case someDay if (someDay == day) => s"$d found"
+        case _ => null //s"$day not found"
+      }
+
+    }
+
 2. Assigning a function to a variable
-3. Passing function to higher order function in Shorter Way
+
+  def someFunction1(some: Double): Double = {
+      some
+  }
+  val v1: (Double) => Double = someFunction1
+  // or
+  val v2 = someFunction1 _
+
+3. Assigning tuple members to individual variables
+
+  val tupleOf4: (String, String, Int, String) = ("Tushar", "Chokshi", 35, "Married")
+
+  // Extracting Tuple members
+
+  // Option 1
+  val firstName = tupleOf4._1
+  val lastName = tupleOf4._2
+  val maritalStatus = tupleOf4._4
+
+  // Option 2
+  // Here, I don't want to use age from tupleOf4, so I can decide not to assign it to any variable.
+  // I am just extracting firstName, lastName and maritalStatus from a tuple
+
+  val (firstName, lastName, _, maritalStatus) = tupleOf4
+
+  println(firstName) // Tushar
+  println(lastName) // Chokshi
+  println(maritalStatus) // Married
+
+4. Passing function to higher order function in Shorter Way
+
+    def isVIP(firstName: String, lastName: String,
+              isHighStatus: (String, String) => Boolean): Boolean = {
+      isHighStatus(firstName, lastName)
+    }
+
+    // Option 1
+    def vipDecider(firstName: String, lastName: String): Boolean = {
+      firstName == "Tushar" && lastName == "Chokshi"
+    }
+    println(isVIP("Tushar", "Chokshi", vipDecider)) // true
+
+    // Option 2
+    isVIP("Tushar", "Chokshi", (fN, lN) => fN == "Tushar" && lN == "Chokshi"))
+
+    // Option 3  (Shorter way)
+    // Here, you need to be very careful because _s (underscores) used in 3rd parameter are replaced by values passed before it exactly in the same order.
+    // e.g. first _ is replaced by "Tushar" and second _ is replaced by "Chokshi"
+    // If you do any mistake in passing input parameters, then it can result in wrong evaluation of the function (3rd parameter)
+    isVIP("Tushar", "Chokshi", _ == "Tushar" && _ == "Chokshi")
 
  */
 object MyOwnExample {
@@ -1037,11 +1100,10 @@ object MyOwnExample {
 
     val finalResult =
       res match {
-      case None => "can not be divided by 0"
-      case Some(anything) => anything
-    }
+        case None => "can not be divided by 0"
+        case Some(anything) => anything
+      }
     println(finalResult) // 1.0
-
 
 
     // util.Try
@@ -1051,9 +1113,9 @@ object MyOwnExample {
     // Success is wrapper of result value
     // Failure is a wrapper of an exception
     val stateCodes: Map[String, String] =
-      Map(("California", "CA"),
-        ("New York", "NY"),
-        ("Vermont", "VT"))
+    Map(("California", "CA"),
+      ("New York", "NY"),
+      ("Vermont", "VT"))
 
     // stateCodes.get("Georgia") will return None
     // stateCodes("Georigia") will throw NoSuchElementException
