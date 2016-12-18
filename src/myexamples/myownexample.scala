@@ -106,6 +106,31 @@ Usage of wildcard _ (underscore)
     // If you do any mistake in passing input parameters, then it can result in wrong evaluation of the function (3rd parameter)
     isVIP("Tushar", "Chokshi", _ == "Tushar" && _ == "Chokshi")
 
+
+
+   val days: List[String] = List("Sun","Mon","Tue","Wed","Thu","Fri","Sat")
+
+   // Option 1
+   days.foreach(day -> println(day))
+
+   // Option 2
+   days.foreach(println(_))
+
+
+5. Like Method Reference in Java
+
+   class C(fn:String) {
+    val firstName:String = fn
+
+    def method() : String ={ "hi "+firstName }
+   }
+
+   List listOfCInstances : List[C] = {new C("Tushar"), new C("Miral"), new C("Srikant")}
+   listOfCInstances.map(c -> c.method())
+   //or
+   listOfCInstances.map(_.method())
+
+
  */
 object MyOwnExample {
 
