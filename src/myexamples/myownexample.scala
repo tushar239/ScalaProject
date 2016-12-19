@@ -1164,26 +1164,36 @@ object MyOwnExample {
 
   }
 
-  class Shape(sN:String) {
+  abstract class Shape(sN:String) {
     val shapeName: String = sN;
+
+    def getArea: Double
+
+    override def toString = s"Shape($shapeName)"
   }
 
   // Unlike to Java, here you can define a default constructor like this
   // Rectangle class extends Shape class. There is no 'super' keyword like Java. It passes shapeName to Shape class as 'extends Shape(shapeName)
-  class Rectangle(l: Int, w: Int, shapeName: String = "Rectangle") extends Shape(shapeName) { // you can provide default value to class parameter to avoid auxiliary constructors (constructor overloading)
+  class Rectangle(l: Double, w: Double, shapeName: String = "Rectangle") extends Shape(shapeName) { // you can provide default value to class parameter to avoid auxiliary constructors (constructor overloading)
     // member variables
     // Unlike to Java, by default class members are given 'public' access. There is no 'default' access like Java.
-    val length: Int = l
-    val width: Int = w
+    val length: Double = l
+    val width: Double = w
+
+    // This is an example of lazy variable. Unless you access it, it won't be initialized.
+    lazy val lazyVar:Double = {
+      println("Trying to initialize lazy var") // This statement won't be printed, unless you try to access lazyVar variable
+      100
+    }
 
     // Auxiliary constructor
     /*
-    def this(l:Int, w: Int, d:Int) ={
+    def this(l:Double, w: Double, d:Double) ={
       this(l, w)
     }
     */
 
-    def getArea: Int = {
+    override def getArea: Double = {
       // using member variables in a member method
       length * width
       // or
@@ -1191,22 +1201,41 @@ object MyOwnExample {
     }
 
     // you can override parent class' method using 'override' keyword. 'override' keyword is not optional like Java's @Override
-    override def toString = s"Rectangle($length, $width)"
+    override def toString = s"Rectangle($length, $width, $shapeName)"
   }
-  // Another way to create member vairbales
+
+  class Square(s:Double) extends Rectangle(s,s,"Square") {
+
+  }
+
+  class AreaCalculator {
+    // apply method is a special method called 'default'. It can be invoked without calling it.
+    def apply(r:Rectangle) = r.length * r.width
+  }
+
+  // Another way to create member variables
   // class Rectangle1(val length: Int, val width: Int)
 
   def tryClass() = {
 
-    val rect1: Rectangle = new Rectangle(5, 5)
-    val rect2: Rectangle = new Rectangle(6, 6)
-    val rect3: Rectangle = new Rectangle(7, 7)
+    val rect1: Shape = new Rectangle(5, 5)
+    val rect2: Shape = new Rectangle(6, 6)
+    val rect3: Shape = new Rectangle(7, 7)
 
-    val rects:List[Rectangle] = List(rect1, rect2, rect3)
+    val rects:List[Shape] = List(rect1, rect2, rect3)
     //val result: List[Int] = rects.map(rect => rect.getArea)
     // or using method reference (_ underscore)
-    val result: List[Int] = rects.map(_.getArea)
-    println(result) // List(25, 36, 49)
+    val result: List[Double] = rects.map(_.getArea)
+    println(result) // List(25.0, 36.0, 49.0)
+
+
+    val rect4: Rectangle = new Rectangle(1, 1)
+    rect4.lazyVar // Trying to initialize lazy var
+    rect4 getArea // Using Operator notation instead of dot notation (rect4.getArea())
+
+    val areaCalculator: AreaCalculator = new AreaCalculator()
+    println(areaCalculator(rect4))
+
 
   }
 
