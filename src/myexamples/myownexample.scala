@@ -1169,60 +1169,6 @@ object MyOwnExample {
 
   def tryClass() = {
 
-    abstract class Shape(sN: String) {
-      val shapeName: String = sN;
-
-      def getArea: Double
-
-      override def toString = s"Shape($shapeName)"
-    }
-
-    // Unlike to Java, here you can define a default constructor like this
-    // Rectangle class extends Shape class. There is no 'super' keyword like Java. It passes shapeName to Shape class as 'extends Shape(shapeName)
-    class Rectangle(l: Double, w: Double, shapeName: String = "Rectangle") extends Shape(shapeName) {
-      // you can provide default value to class parameter to avoid auxiliary constructors (constructor overloading)
-      // Another way to create member variables
-      // class Rectangle1(val length: Int, val width: Int)
-
-      // member variables
-      // Unlike to Java, by default class members are given 'public' access. There is no 'default' access like Java.
-      val length: Double = l
-      val width: Double = w
-
-      // This is an example of lazy variable. Unless you access it, it won't be initialized.
-      lazy val lazyVar: Double = {
-        println("Trying to initialize lazy var") // This statement won't be printed, unless you try to access lazyVar variable
-        100
-      }
-
-      // Auxiliary constructor
-      /*
-      def this(l:Double, w: Double, d:Double) ={
-        this(l, w)
-      }
-      */
-
-      override def getArea: Double = {
-        // using member variables in a member method
-        length * width
-        // or
-        //l * w
-      }
-
-      // you can override parent class' method using 'override' keyword. 'override' keyword is not optional like Java's @Override
-      override def toString = s"Rectangle($length, $width, $shapeName)"
-    }
-
-    class Square(s: Double) extends Rectangle(s, s, "Square") {
-
-    }
-
-    class AreaCalculator {
-      // apply method is a special method called 'default'. It can be invoked without calling it.
-      def apply(r: Rectangle) = r.length * r.width
-    }
-
-
     val rect1: Shape = new Rectangle(5, 5)
     val rect2: Shape = new Rectangle(6, 6)
     val rect3: Shape = new Rectangle(7, 7)
