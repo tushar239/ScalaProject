@@ -100,7 +100,7 @@ object SingletonRectangle extends Rectangle(1, 5) {
   // all members of Singleton Object are static
   val myVar: Int = 10
 
-  // main method can be defined in singleton object (not in a class) because main method is by default static and scala doesn't support static keyword.
+  // main method can be defined in object (not in a class) because main method is by default static and scala doesn't support static keyword.
   def main(args: Array[String]): Unit = {
     // class creation example
     {
@@ -130,7 +130,7 @@ object SingletonRectangle extends Rectangle(1, 5) {
 
       // Trying apply method
       // AreaCalculator has apply method. So, by simply doing areaCalculator(rect4) will invoke apply method. You don't have to say areaCalculator.apply(rect4)
-      // apply methods are very helpful as factory methods in Singleton Objects.
+      // apply methods are very helpful as factory methods in "Companion Singleton Objects".
       val areaCalculator: AreaCalculator = new AreaCalculator()
       println(areaCalculator(rect4))
 
