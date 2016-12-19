@@ -7,12 +7,11 @@ package myexamples
 /*
 This file has examples of
 - class
-- object
+- object (singleton object)
 - main method
 - sealed class
 - override keyword
 - inheritance
-- singleton object
 - companion object
 - apply method
 - lazy initialization of a variable
@@ -101,7 +100,7 @@ object SingletonRectangle extends Rectangle(1, 5) {
   // all members of Singleton Object are static
   val myVar: Int = 10
 
-  // main method can be defined in object (not in a class) because main method is by default static and scala doesn't support static keyword.
+  // main method can be defined in Singleton Object (not in a class) because main method is by default static and scala doesn't support static keyword.
   def main(args: Array[String]): Unit = {
     // class creation example
     {
