@@ -63,7 +63,7 @@ class AreaCalculator {
 
 // In scala, object is a singleton object that can extend a class. Class cannot extend an object.
 // Singleton object is a replacement of 'static' keyword of Java.
-// Scala thought of that defining members as static is too much in the world of multi-threading and distributed system.
+// Scala thought of that defining members as static creates concurrency problems in the multi-threaded and distributed environments.
 // All members of Singleton Object are static.
 // Singleton Object cannot have class parameters(constructor)
 // Singleton Object can extend a class. Other way round is not true.
