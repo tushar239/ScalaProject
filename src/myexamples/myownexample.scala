@@ -179,8 +179,6 @@ object MyOwnExample {
 
     tryOptionAndUtilTry()
 
-    tryClass()
-
     tryOperatorOverloading()
   }
 
@@ -1167,27 +1165,6 @@ object MyOwnExample {
   }
 
 
-  def tryClass() = {
-
-    val rect1: Shape = new Rectangle(5, 5)
-    val rect2: Shape = new Rectangle(6, 6)
-    val rect3: Shape = new Rectangle(7, 7)
-
-    val rects: List[Shape] = List(rect1, rect2, rect3)
-    //val result: List[Int] = rects.map(rect => rect.getArea)
-    // or using method reference (_ underscore)
-    val result: List[Double] = rects.map(_.getArea)
-    println(result) // List(25.0, 36.0, 49.0)
-
-
-    val rect4: Rectangle = new Rectangle(1, 1)
-    rect4.lazyVar // Trying to initialize lazy var
-    rect4 getArea // Using Operator notation instead of dot notation (rect4.getArea())
-
-    val areaCalculator: AreaCalculator = new AreaCalculator()
-    println(areaCalculator(rect4))
-
-  }
 
   def tryOperatorOverloading() = {
 
