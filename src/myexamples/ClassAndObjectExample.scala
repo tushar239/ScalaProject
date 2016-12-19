@@ -86,6 +86,7 @@ class AreaCalculator {
 // To overcome this limitation of constructor in scala, you need use Companion Object having many apply methods as needed. Each apply method can create an instance of a class. You can call any other method of a class or companion object from apply method and based on that instantiate a class.
 object Rectangle {
   def apply(l: Double, w: Double, shapeName: String = "Rectangle"): Rectangle = new Rectangle(l, w, shapeName)
+
   def apply(l: Double): Rectangle = new Rectangle(l, l, "Rectangle")
 }
 
@@ -150,14 +151,12 @@ object SingletonRectangle extends Rectangle(1, 5) {
     {
       println(SingletonRectangle) // Rectangle(1.0, 3.0, Rectangle)
       println(SingletonRectangle.getArea) // 3.0 --- accessing singleton object's members like static members
-
-
     }
 
     // Companion Singleton Object example
     {
       val rectangle: Rectangle = Rectangle(1) // This calls apply(l: Double) of Companion Object Rectangle, which acts like a factory method to return an instance of Rectangle class
-      println(rectangle)// Rectangle(1.0, 1.0, Rectangle)
+      println(rectangle) // Rectangle(1.0, 1.0, Rectangle)
     }
   }
 }
