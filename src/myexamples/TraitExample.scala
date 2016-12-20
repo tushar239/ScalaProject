@@ -46,12 +46,38 @@ object TraitExample {
     }
   }
 
+  trait MyGroup {
+    def hiGroup: String;
+  }
+
+  class ConcreteGroup1 extends MyGroup {
+    override def hiGroup: String = "hi from Tushar"
+  }
+
+  class ConcreteGroup2 extends MyGroup {
+    override def hiGroup: String = "hi from Someone Else"
+  }
+
+  // Companion Singleton Object for a trait
+  object MyGroup {
+    def apply(name: String): MyGroup =
+      name match {
+        case "Tushar" => new ConcreteGroup1
+        case _ => new ConcreteGroup2
+      }
+
+  }
+
   def main(args: Array[String]): Unit = {
     val dog: Dog = new Dog()
 
     dog.speak
     dog.walk
     dog.run
+
+    // Testing Companion Singleton Object of a trait
+    val group: MyGroup = MyGroup("Tushar")
+    println(group.hiGroup) // hi from Tushar
 
   }
 }
