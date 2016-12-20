@@ -38,7 +38,9 @@ object TypeClassPatternExample {
   }
 
   // metho that is an interface to Type Class
-  def log[A](a: A)(implicit showObj: Show[A]) = println(showObj.show(a))
+  // def log[A](a: A)(implicit showObj: Show[A]) = println(showObj.show(a))
+  // is same as
+  def log[A: Show](a: A) = println(implicitly[Show[A]].show(a))
 
   def main(args: Array[String]): Unit = {
     // See, scala automatically finds a correct Type class instance to be passed to log method
