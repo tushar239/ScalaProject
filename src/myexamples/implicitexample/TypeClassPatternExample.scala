@@ -1,4 +1,4 @@
-package myexamples
+package myexamples.implicitexample
 
 /**
   * @author Tushar Chokshi @ 12/20/16.
