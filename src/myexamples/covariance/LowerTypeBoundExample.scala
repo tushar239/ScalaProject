@@ -1,5 +1,4 @@
-package myexamples
-
+package myexamples.covariance
 
 /**
   * @author Tushar Chokshi @ 12/19/16.
