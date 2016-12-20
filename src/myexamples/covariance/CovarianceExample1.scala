@@ -6,7 +6,7 @@ package myexamples.covariance
 
 // http://docs.scala-lang.org/tutorials/tour/lower-type-bounds
 // >:  is a symbol for lowerbound type. U >: T mean U is a super type of T
-object LowerTypeBoundExample extends App {
+object CovarianceExample1 extends App {
 
   /*case class ListNode[T](h: T, t: ListNode[T]) {
 
@@ -26,7 +26,7 @@ object LowerTypeBoundExample extends App {
 
   /*
   http://stackoverflow.com/questions/14584830/covariant-type-t-occurs-in-contravariant-position
-  
+
   ListNode[+T] means if U <: T (U is a child class of T), then ListNode[U] <: ListNode[T]
 
         Any

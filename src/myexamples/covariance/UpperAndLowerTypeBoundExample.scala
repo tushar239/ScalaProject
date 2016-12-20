@@ -5,6 +5,9 @@ package myexamples.covariance
   */
 
 // http://docs.scala-lang.org/tutorials/tour/upper-type-bounds
+// UpperBound symbol is <:
+// LowerBound symbol is >:
+// They are like U extends T and U super T kind of generics in Java.
 object UpperAndLowerTypeBoundExample {
 
   abstract class Animal {
